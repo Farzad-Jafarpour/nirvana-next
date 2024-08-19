@@ -1,8 +1,12 @@
 "use client";
 import { Flex } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { AnimatedLogo, ItemRenderer, ToastRenderer } from "./components/common";
-import Navbar from "./components/Navbar";
+import React, { useEffect, useState } from "react";
+import {
+  ItemRenderer,
+  AnimatedLogo,
+  ToastRenderer,
+} from "../components/common";
+import Navbar from "../components/Navbar";
 import { BaseUrl } from "@/assets/constants";
 
 const url = BaseUrl + "land.webp";
@@ -41,7 +45,7 @@ const styles = {
   },
 };
 
-export default function Home() {
+const Table = ({ params }: { params: { id: string } }) => {
   const [showToast, setShowToast] = useState(true);
 
   useEffect(() => {
@@ -63,7 +67,11 @@ export default function Home() {
             path="/reservation"
             styling={styles.content}
           />
-          <ItemRenderer item="منو" path="/menuitems" styling={styles.content} />
+          <ItemRenderer
+            item="منو"
+            path={`${params.id}/menuitems`}
+            styling={styles.content}
+          />
         </Flex>
 
         {/* Flex Container for Main and Aside */}
@@ -86,4 +94,6 @@ export default function Home() {
       </Flex>
     </>
   );
-}
+};
+
+export default Table;

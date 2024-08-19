@@ -1,8 +1,7 @@
 "use client";
 import { Flex } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { AnimatedLogo, ItemRenderer, ToastRenderer } from "./components/common";
-import Navbar from "./components/Navbar";
+import { AnimatedLogo, ItemRenderer } from "../components/common";
+import Navbar from "../components/Navbar";
 import { BaseUrl } from "@/assets/constants";
 
 const url = BaseUrl + "land.webp";
@@ -31,7 +30,7 @@ const styles = {
     display: "flex",
     margin: "2px",
     borderRadius: "10px",
-    minWidth: "200px",
+    minWidth: "180px",
     minHeight: "200px",
     flexDirection: "column",
     justifyContent: "center",
@@ -41,17 +40,7 @@ const styles = {
   },
 };
 
-export default function Home() {
-  const [showToast, setShowToast] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowToast(false);
-    }, 2000); // Show toast for 2 seconds
-
-    return () => clearTimeout(timer); // Cleanup the timer on component unmount
-  }, []);
-
+const MenuItems: React.FC = () => {
   return (
     <>
       <Navbar />
@@ -59,31 +48,34 @@ export default function Home() {
       <Flex sx={styles.container}>
         <Flex sx={styles.itemContainer}>
           <ItemRenderer
-            item="رزرو و شرایط رزرو"
-            path="/reservation"
+            item="نوشیدنی های گرم"
+            path="/menu/hot"
             styling={styles.content}
           />
-          <ItemRenderer item="منو" path="/menuitems" styling={styles.content} />
+          <ItemRenderer
+            item="صبحانه"
+            path="/menu/breakfast"
+            styling={styles.content}
+          />
         </Flex>
 
-        {/* Flex Container for Main and Aside */}
         <Flex sx={styles.itemContainer}>
           <ItemRenderer
-            item="سوالات پر تکرار"
-            path="/faq"
+            item="بار سرد"
+            path="/menu/cold"
             styling={styles.content}
           />
           <ItemRenderer
-            item="تماس با ما"
-            path="/contact"
+            item="غذا و پیش غذا"
+            path="/menu/food"
             styling={styles.content}
           />
         </Flex>
 
         <AnimatedLogo />
-
-        {showToast && <ToastRenderer content="به نیروانا خوش آمدید" />}
       </Flex>
     </>
   );
-}
+};
+
+export default MenuItems;

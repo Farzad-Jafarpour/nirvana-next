@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  isAdmin   Boolean?
+  createdAt DateTime @default(now())
+}
+
+model MenuItem {
+  id          Int         @id @default(autoincrement())
+  title       String
+  price       Int
+  src         String
+  hasExtra    Boolean
+  details     String?
+  isAvailable Boolean
+  isNew       Boolean
+  isLarge     Boolean
+  isEnable    Boolean     @default(true)
+  isTax       Boolean     @default(false)
+  section     Section     @relation(fields: [sectionId], references: [id])
+  sectionId   Int
+  OrderItem   OrderItem[]
+
+  @@index([sectionId])
+}
+
+model Section {
+  id       Int    @id @default(autoincrement())
+  title    String
+  icon     String
+  category String
+
+  menuItems MenuItem[]
+}
+
+model ExtraItem {
+  id             Int              @id @default(autoincrement())
+  title          String
+  price          Int
+  category       String
+  OrderExtraItem OrderExtraItem[]
+}
+
+model Order {
+  id         Int      @id @default(autoincrement())
+  table      Int
+  totalPrice Int
+  createAt   DateTime @default(now())
+  isReady    Boolean
+  isPaid     Boolean
+  isTax      Boolean  @default(false)
+
+  orderItems OrderItem[]
+}
+
+model OrderItem {
+  id         Int @id @default(autoincrement())
+  orderId    Int
+  menuItemId Int
+  quantity   Int
+  price      Int
+
+  order          Order            @relation(fields: [orderId], references: [id])
+  menuItem       MenuItem         @relation(fields: [menuItemId], references: [id])
+  orderExtraItem OrderExtraItem[]
+}
+
+model OrderExtraItem {
+  id          Int @id @default(autoincrement())
+  orderItemId Int
+  extraItemId Int
+  quantity    Int
+  price       Int
+
+  orderItem OrderItem @relation(fields: [orderItemId], references: [id])
+  extraItem ExtraItem @relation(fields: [extraItemId], references: [id])
+}

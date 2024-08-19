@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE `MenuItem` ADD COLUMN `isTax` BOOLEAN NOT NULL DEFAULT false;
+
+-- AlterTable
+ALTER TABLE `Order` ADD COLUMN `isTax` BOOLEAN NOT NULL DEFAULT false;
