@@ -1,3 +1,4 @@
+"use client";
 import { BaseUrl, colorPalette } from "@/assets/constants";
 import { PhoneIcon } from "@chakra-ui/icons";
 import {

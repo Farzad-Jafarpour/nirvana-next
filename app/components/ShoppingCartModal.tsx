@@ -21,14 +21,14 @@ import { axiosInstance } from "@/services/apiClient";
 import { usePathname } from "next/navigation";
 
 // Function to transform data
-const transformData = (data) => {
+const transformData = (data: any) => {
   return {
-    orderItems: data.map((item) => ({
+    orderItems: data.map((item: any) => ({
       menuItemId: item.id, // Map 'id' to 'menuItemId'
       quantity: item.count, // Map 'count' to 'quantity'
       price: item.price * 1000, // Convert 'price' if necessary (example conversion)
       orderExtraItem: item.extraItems
-        ? item.extraItems.map((extra) => ({
+        ? item.extraItems.map((extra: any) => ({
             extraItemId: extra.id, // Map 'id' to 'extraItemId'
             quantity: extra.count, // Map 'count' to 'quantity'
             price: extra.price * 1000, // Convert 'price' if necessary

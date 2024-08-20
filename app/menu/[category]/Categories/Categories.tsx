@@ -49,7 +49,7 @@ const Categories: React.FC = () => {
         <Box
           as="button"
           sx={styles.spans}
-          width={234}
+          width={240}
           onClick={() => {
             setShow(!show);
           }}

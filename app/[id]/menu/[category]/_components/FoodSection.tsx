@@ -78,12 +78,13 @@ const FoodSection: React.FC<FoodSectionProps> = ({
           title={item?.title}
           price={item?.price}
           src={item?.src}
-          details={item?.details}
+          details={item?.details || ""}
           hasExtra={item?.hasExtra}
           category={category}
           id={item?.id}
           isNew={item?.isNew}
           isLarge={item?.isLarge}
+          isAvailable={item?.isAvailable}
         />
       ))}
     </Box>

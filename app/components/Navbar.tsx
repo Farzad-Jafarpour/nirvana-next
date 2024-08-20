@@ -35,6 +35,7 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     color: colorPalette.__hover,
+    fontWeight: "bold",
   },
   menuItem: {
     bg: colorPalette.primary,
@@ -77,7 +78,7 @@ const Navbar = () => {
     <>
       <Flex sx={styles.container}>
         <Logo />
-        <Heading sx={styles.heading} as="h1" size="lg">
+        <Heading sx={styles.heading} as="h1" size="3xl">
           کافه نیروانا
         </Heading>
 

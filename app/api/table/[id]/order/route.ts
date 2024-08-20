@@ -5,11 +5,11 @@ import { orderSchema, orderItemType } from "@/types/order";
 
 const prisma = new PrismaClient();
 
-const calcTotalPrice = (orderItems) =>
-  orderItems.reduce((total, orderItem) => {
+const calcTotalPrice = (orderItems: any) =>
+  orderItems.reduce((total: number, orderItem: any) => {
     const totalPrice = orderItem.price * orderItem.quantity;
     const extraItemPrice = orderItem.orderExtraItem.reduce(
-      (extraTotal, extraItem) =>
+      (extraTotal: number, extraItem: any) =>
         extraTotal + parseFloat(extraItem.price) * (extraItem.count || 1),
       0
     );

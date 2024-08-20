@@ -38,7 +38,7 @@ const ExtraItemRenderer: React.FC<ExtraType> = ({
   title,
   category,
   price,
-  foodId,
+  foodId = 0,
 }) => {
   const foods = useFoodStore((state) => state.foods);
   const addExtraItem = useFoodStore((state) => state.addExtraItem);

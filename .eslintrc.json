@@ -1,3 +1,8 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "no-restricted-imports": "off",
+    "no-undef": "off"
+    // Add other rules you want to disable
+  }
 }

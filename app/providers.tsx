@@ -14,7 +14,7 @@ export function Providers({ children }: ClientProvidersProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraProvider theme={theme}>
-        {/* <Fonts /> */}
+        <Fonts />
         {children}
       </ChakraProvider>
     </QueryClientProvider>

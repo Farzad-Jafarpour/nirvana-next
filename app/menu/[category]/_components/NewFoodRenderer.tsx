@@ -87,7 +87,7 @@ const NewFoodRenderer = () => {
             title={item?.title}
             price={item?.price}
             src={item?.src}
-            details={item?.details}
+            details={item?.details || ""}
             hasExtra={item?.hasExtra}
             category={item.category}
             id={item?.id}
