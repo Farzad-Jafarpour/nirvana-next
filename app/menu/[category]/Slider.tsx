@@ -21,7 +21,6 @@ const Slider = () => {
   // const prm = params;
   const category = useMenuStore((state) => state.currentCategory);
   const { data, error, isLoading } = useMenuItems();
-  console.log("slider data", data);
 
   let foodItems: SectionType[] = [];
   switch (category) {
@@ -41,6 +40,7 @@ const Slider = () => {
       foodItems = data!;
   }
   const items = foodItems;
+  console.log(items);
 
   const slides = items.length > 2 ? 3 : items.length;
 

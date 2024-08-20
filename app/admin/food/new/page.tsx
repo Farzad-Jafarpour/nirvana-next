@@ -1,20 +1,8 @@
 "use client";
 import { colorPalette } from "@/assets/constants";
-import { useMenuItems } from "@/hooks/useSections";
-import { axiosInstance } from "@/services/apiClient";
-import {
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  FormLabel,
-  Input,
-  Select,
-  Spacer,
-  VStack,
-} from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import FoodForm from "../_components/FoodForm";
 
 const styles = {

@@ -1,5 +1,5 @@
 "use client";
-import { colorPalette } from "@/assets/constants";
+import { BaseUrl, colorPalette } from "@/assets/constants";
 import { axiosInstance } from "@/services/apiClient";
 import {
   Box,
@@ -15,6 +15,8 @@ import {
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+
+const url = BaseUrl + "logo.webp";
 
 const styles = {
   container: {
@@ -75,9 +77,10 @@ export default function CategoryForm() {
       .post("section", {
         title: title,
         category: category,
-        icon: "icon",
+        icon: url,
       })
       .then((res) => res.data);
+    router.push("/admin/food");
   };
 
   useEffect(() => {

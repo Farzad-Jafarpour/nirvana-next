@@ -1,6 +1,7 @@
 import { colorPalette } from "@/assets/constants";
 import { Box, Button, Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
+import Image from "next/image";
 import React from "react";
 import { Link } from "react-scroll";
 import { useSwiper } from "swiper/react";
@@ -66,6 +67,7 @@ const CategoryItemRenderer: React.FC<CategoryItemRendererProps> = ({
       width: "80px",
       height: "80px",
       borderRadius: "5px",
+      overflow: "hidden",
     },
   };
 
@@ -83,7 +85,16 @@ const CategoryItemRenderer: React.FC<CategoryItemRendererProps> = ({
     >
       <StyledButton color={color} height={height} width={width}>
         <StyledBox color={color} height={height} width={width}>
-          {img && <img src={img} alt="menu" style={styles.images} />}
+          {img && (
+            <Box sx={styles.images}>
+              <Image
+                src={img}
+                alt="menu"
+                width="80"
+                height="80"
+              />
+            </Box>
+          )}
           <Text padding={"5px"}>{title}</Text>
         </StyledBox>
       </StyledButton>

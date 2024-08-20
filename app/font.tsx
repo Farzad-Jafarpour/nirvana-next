@@ -6,7 +6,7 @@ const Fonts: React.FC = () => (
     styles={`
       @font-face {
         font-family: "BMehr";
-        src: url("/fonts/BMehr.ttf")
+        src: url("/fonts/BMehrBold.ttf")
           format("truetype");
         font-weight: 900;
         font-style: normal;

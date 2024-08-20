@@ -20,7 +20,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link rel="icon" type="image/jpg" sizes="32x32" href="/logo.jpg" />
         <meta
           name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+          content="width=device-width, initial-scale=1.0, user-scalable=no"
         />
         <title>نیروانا کافه</title>
       </head>

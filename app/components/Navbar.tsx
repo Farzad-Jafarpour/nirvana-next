@@ -78,7 +78,7 @@ const Navbar = () => {
     <>
       <Flex sx={styles.container}>
         <Logo />
-        <Heading sx={styles.heading} as="h1" size="3xl">
+        <Heading sx={styles.heading} as="h1" size="xl">
           کافه نیروانا
         </Heading>
 
@@ -109,7 +109,7 @@ const Navbar = () => {
               <Link href={"/"}>
                 <MenuItem sx={styles.menuItem}>خانه</MenuItem>
               </Link>
-              <Link href={"/login"}>
+              <Link href={"/auth/login"}>
                 <MenuItem sx={styles.menuItem}>ورود</MenuItem>
               </Link>
               <Link href={"/menu"}>
