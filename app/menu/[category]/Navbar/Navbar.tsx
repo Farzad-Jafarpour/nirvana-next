@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Box,
@@ -112,19 +112,19 @@ const Navbar: React.FC = () => {
               <Link href={"/login"}>
                 <MenuItem sx={styles.menuItem}>ورود</MenuItem>
               </Link>
-              <Link href={"/menulayout/menu"}>
+              <Link href={"/menu/menuitems"}>
                 <MenuItem sx={styles.menuItem}>منو</MenuItem>
               </Link>
-              <Link href={"/menulayout/menu/breakfast"}>
+              <Link href={"/menu/breakfast"}>
                 <MenuItem sx={styles.menuItem}>صبحانه</MenuItem>
               </Link>
-              <Link href={"/menulayout/menu/food"}>
+              <Link href={"/menu/food"}>
                 <MenuItem sx={styles.menuItem}>غذاها</MenuItem>
               </Link>
-              <Link href={"/menulayout/menu/cold"}>
+              <Link href={"/menu/cold"}>
                 <MenuItem sx={styles.menuItem}>بار سرد</MenuItem>
               </Link>
-              <Link href={"/menulayout/menu/hot"}>
+              <Link href={"/menu/hot"}>
                 <MenuItem sx={styles.menuItem}>بار گرم</MenuItem>
               </Link>
             </MenuList>

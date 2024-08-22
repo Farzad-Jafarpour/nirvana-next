@@ -1,5 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: "/api",
+        destination: "http://nirvanacafe.ir/api",
+      },
+    ];
+  },
+  output: "standalone",
   images: {
     remotePatterns: [
       {

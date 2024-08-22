@@ -112,7 +112,7 @@ const Navbar = () => {
               <Link href={"/auth/login"}>
                 <MenuItem sx={styles.menuItem}>ورود</MenuItem>
               </Link>
-              <Link href={"/menu"}>
+              <Link href={"/menu/menuitems"}>
                 <MenuItem sx={styles.menuItem}>منو</MenuItem>
               </Link>
               <Link href={"/menu/breakfast"}>
