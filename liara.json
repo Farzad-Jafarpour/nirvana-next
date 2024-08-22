@@ -2,5 +2,11 @@
   "app": "nirvanacafe",
   "next": {
     "modifyConfig": false
-  }
+  },
+  "disks": [
+    {
+      "name": "my-disk",
+      "mountTo": "uploads"
+    }
+  ]
 }

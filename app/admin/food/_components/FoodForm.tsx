@@ -20,23 +20,13 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-type Inputs = {
-  price: number;
-  category: string;
-  image: FileList;
-  hasExtra: boolean;
-  isAvailable: boolean;
-  isNew: boolean;
-  isLarge: boolean;
+type FoodFormType = MenuItemType & {
+  image?: FileList;
 };
 
-export default function FoodForm({ food }: { food?: MenuItemType }) {
+export default function FoodForm({ food }: { food?: FoodFormType }) {
   const router = useRouter();
   const { data: foodData } = useMenuItems();
-
-  const url = BaseUrl + "land.webp";
-
-  const valueAsBoolean = (value: string) => value === "true";
 
   const [sectionId, setSectionId] = useState(0);
 
@@ -44,7 +34,7 @@ export default function FoodForm({ food }: { food?: MenuItemType }) {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm<MenuItemType>({
+  } = useForm<FoodFormType>({
     defaultValues: {
       title: food?.title || "",
       price: food?.price || 0,
@@ -105,19 +95,41 @@ export default function FoodForm({ food }: { food?: MenuItemType }) {
     },
   };
 
-  const onSubmit = handleSubmit(async (data: MenuItemType) => {
-    console.log("dat", data);
+  const onSubmit = handleSubmit(async (data: FoodFormType) => {
+    const formData = new FormData();
 
-    let submitData = data;
-    submitData.sectionId = sectionId;
-    submitData.src = url;
+    formData.append("title", data.title);
+    formData.append("price", String(data.price));
+    formData.append("hasExtra", String(data.hasExtra));
+    formData.append("isAvailable", String(data.isAvailable));
+    formData.append("isNew", String(data.isNew));
+    formData.append("isLarge", String(data.isLarge));
+    formData.append("isTax", String(data.isTax));
+    formData.append("isEnable", String(data.isEnable));
+    formData.append("sectionId", String(sectionId));
 
-    if (food) {
-      await axiosInstance
-        .patch(`menu/${food.id}`, submitData)
-        .then((res) => res.data);
-    } else await axiosInstance.post("menu", submitData).then((res) => res.data);
-    router.push("/admin/food");
+    if (data.image && data.image[0]) {
+      formData.append("image", data.image[0]);
+    }
+
+    try {
+      if (food) {
+        await axiosInstance.patch(`menu/${food.id}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+      } else {
+        await axiosInstance.post("menu", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+      }
+      router.push("/admin/food");
+    } catch (error) {
+      console.error("Failed to submit form data:", error);
+    }
   });
 
   return (
@@ -127,7 +139,7 @@ export default function FoodForm({ food }: { food?: MenuItemType }) {
           <Flex sx={styles.itemContainer}>
             <Box sx={styles.item}>
               <FormControl isInvalid={!!errors.title}>
-                <FormLabel sx={styles.labels} htmlFor="price">
+                <FormLabel sx={styles.labels} htmlFor="title">
                   نام غذا
                 </FormLabel>
                 <Input
@@ -174,7 +186,7 @@ export default function FoodForm({ food }: { food?: MenuItemType }) {
                   id="hasExtra"
                   placeholder="وضعیت آیتم اضافه را انتخاب کنید"
                   {...register("hasExtra", {
-                    setValueAs: valueAsBoolean,
+                    setValueAs: (value) => value === "true",
                   })}
                 >
                   <option style={styles.selectOptions} value="true">
@@ -198,7 +210,7 @@ export default function FoodForm({ food }: { food?: MenuItemType }) {
                   id="isTax"
                   placeholder="وضعیت مالیات را انتخاب کنید"
                   {...register("isTax", {
-                    setValueAs: valueAsBoolean,
+                    setValueAs: (value) => value === "true",
                   })}
                 >
                   <option style={styles.selectOptions} value="true">
@@ -225,7 +237,7 @@ export default function FoodForm({ food }: { food?: MenuItemType }) {
                   id="isAvailable"
                   placeholder="وضعیت غذا را انتخاب کنید"
                   {...register("isAvailable", {
-                    setValueAs: valueAsBoolean,
+                    setValueAs: (value) => value === "true",
                   })}
                 >
                   <option style={styles.selectOptions} value="true">
@@ -249,7 +261,7 @@ export default function FoodForm({ food }: { food?: MenuItemType }) {
                   id="isNew"
                   placeholder="وضعیت جدید بودن غذا را انتخاب کنید"
                   {...register("isNew", {
-                    setValueAs: valueAsBoolean,
+                    setValueAs: (value) => value === "true",
                   })}
                 >
                   <option style={styles.selectOptions} value="true">
@@ -273,7 +285,7 @@ export default function FoodForm({ food }: { food?: MenuItemType }) {
                   id="isEnable"
                   placeholder="وضعیت فعال بودن را انتخاب کنید"
                   {...register("isEnable", {
-                    setValueAs: valueAsBoolean,
+                    setValueAs: (value) => value === "true",
                   })}
                 >
                   <option style={styles.selectOptions} value="true">
@@ -299,7 +311,7 @@ export default function FoodForm({ food }: { food?: MenuItemType }) {
                   id="isLarge"
                   placeholder="وضعیت بزرگ بودن آیتم را انتخاب کنید"
                   {...register("isLarge", {
-                    setValueAs: valueAsBoolean,
+                    setValueAs: (value) => value === "true",
                   })}
                 >
                   <option style={styles.selectOptions} value="true">
@@ -341,7 +353,7 @@ export default function FoodForm({ food }: { food?: MenuItemType }) {
               </Box>
             )}
           </Flex>
-          {/* <FormControl isInvalid={!!errors.image}>
+          <FormControl isInvalid={!!errors.image}>
             <FormLabel sx={styles.labels} htmlFor="image">
               تصویر
             </FormLabel>
@@ -357,7 +369,7 @@ export default function FoodForm({ food }: { food?: MenuItemType }) {
             <FormErrorMessage>
               {errors.image && errors.image.message}
             </FormErrorMessage>
-          </FormControl> */}
+          </FormControl>
           <Box sx={styles.btnContainer}>
             <Button
               width="60px"
