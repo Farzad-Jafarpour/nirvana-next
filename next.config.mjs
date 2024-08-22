@@ -13,9 +13,9 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "http",
-        hostname: "f1.haizenberg.xyz",
+        hostname: "nirvanacafe.ir",
         port: "",
-        pathname: "/menu/**",
+        pathname: "/**",
       },
     ],
   },

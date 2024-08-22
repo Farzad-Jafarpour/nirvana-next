@@ -20,14 +20,6 @@ const Fonts: React.FC = () => (
         font-style: normal;
         font-display: normal;
       }
-      @font-face {
-        font-family: "BYekan";
-        src: url("/fonts/Byekan.ttf")
-          format("truetype");
-        font-weight: 900;
-        font-style: normal;
-        font-display: normal;
-      }
       `}
   />
 );

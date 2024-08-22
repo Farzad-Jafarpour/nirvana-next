@@ -40,7 +40,6 @@ const Slider = () => {
       foodItems = data!;
   }
   const items = foodItems;
-  console.log(items);
 
   const slides = items.length > 2 ? 3 : items.length;
 

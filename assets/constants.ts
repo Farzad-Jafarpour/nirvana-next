@@ -21,4 +21,4 @@ export const margins = {
   lg: "15px",
 };
 
-export const BaseUrl = "http://f1.haizenberg.xyz/menu/";
+export const BaseUrl = "http://nirvanacafe.ir/uploads/";

@@ -22,8 +22,6 @@ const NewFoodRenderer = () => {
       }))
   );
 
-  console.log("new", newFoods);
-
   const styles = {
     container: {
       width: "100vw",

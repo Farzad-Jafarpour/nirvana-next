@@ -109,7 +109,7 @@ const Navbar: React.FC = () => {
               <Link href={"/"}>
                 <MenuItem sx={styles.menuItem}>خانه</MenuItem>
               </Link>
-              <Link href={"/login"}>
+              <Link href={"/auth/login"}>
                 <MenuItem sx={styles.menuItem}>ورود</MenuItem>
               </Link>
               <Link href={"/menu/menuitems"}>

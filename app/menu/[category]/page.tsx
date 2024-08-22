@@ -13,8 +13,6 @@ const Menu = ({ params }: { params: { category: string } }) => {
   categorySetter(category);
   const { data, error, isLoading } = useMenuItems();
 
-  console.log("data", data);
-
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
   let foodItems: SectionType[] = [];

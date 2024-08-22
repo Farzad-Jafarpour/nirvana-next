@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
 
     const filePath = path.join(uploadDir, fileName);
     await fs.writeFile(filePath, buffer);
-    src = `/uploads/${fileName}`; // Store the relative path
+    src = `/public/uploads/${fileName}`; // Store the relative path
   }
 
   const newMenuItem = await prisma.menuItem.create({

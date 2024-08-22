@@ -5,8 +5,8 @@ import { fileInputTheme } from "./FileInputTheme";
 
 const theme = extendTheme({
   fonts: {
-    heading: `'BMehr', 'BNazanin','BYekan', sans-serif`,
-    body: `'BMehr','BNazanin','BYekan', sans-serif`,
+    heading: `'BMehr', 'BNazanin', sans-serif`,
+    body: `'BMehr','BNazanin', sans-serif`,
   },
   components: { Modal: modalTheme, Select: selectTheme, Input: fileInputTheme },
 });
