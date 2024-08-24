@@ -12,12 +12,19 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import MenuItem from "./MenuItem";
+import { colorPalette } from "@/assets/constants";
 
 const Section = ({ sectionObj }: { sectionObj: SectionType }) => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <Card borderRadius="5px" boxShadow="md" backgroundColor="teal.400" m={2}>
+    <Card
+      borderRadius="5px"
+      boxShadow="md"
+      backgroundColor={colorPalette.secondary}
+      color={colorPalette.nav}
+      m={2}
+    >
       <CardBody>
         <Flex alignItems="center" onClick={onToggle} cursor="pointer">
           <Heading as="h4" fontSize="lg">

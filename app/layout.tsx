@@ -17,7 +17,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="fa">
       <head>
-        <link rel="icon" type="image/jpg" sizes="32x32" href="/logo.jpg" />
+        <link
+          rel="icon"
+          type="image/jpg"
+          sizes="32x32"
+          href="http://nirvanacafe.ir/uploads/logo.webp"
+        />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0, user-scalable=no"

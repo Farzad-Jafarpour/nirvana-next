@@ -1,32 +1,25 @@
 "use client";
 import { Box } from "@chakra-ui/react";
-import { colorPalette } from "@/assets/constants";
-import SideBar from "./_components/SideBar";
-import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import React from "react";
+import AdminNavbar from "./_components/AdminNavbar";
 
 const styles = {
   container: {
-    display: "flex",
-    alignItems: "center",
-    height: "100vh",
-  },
-  sidebar: {
-    display: "flex",
-    width: "250px",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100vh",
+    position: "fixed",
+    right: "0",
+    left: "0",
+    zIndex: "1000",
   },
   content: {
-    display: "flex",
+    position: "absolute",
+    top: "82px",
+    overflow: "hidden",
+    width: "100%",
     flexGrow: 1,
+    display: "flex",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    height: "100vh",
-    background: "#030303",
-    padding: "20px",
-    bg: colorPalette.__svgFill,
   },
 };
 
@@ -36,11 +29,11 @@ interface RootLayoutProps {
 
 const layout = ({ children }: RootLayoutProps) => {
   return (
-    <Box sx={styles.container} dir="rtl">
-      <Box sx={styles.sidebar}>
-        <SideBar />
+    <Box>
+      <Box sx={styles.container}>
+        <AdminNavbar />
       </Box>
-      <Box w="100%" px="1%">
+      <Box sx={styles.content} dir="rtl">
         {children}
       </Box>
     </Box>

@@ -1,21 +1,17 @@
 import { orderType } from "@/types/order";
 import {
+  Box,
+  Button,
   Card,
   CardBody,
+  Collapse,
   Flex,
   Heading,
   Spacer,
-  Collapse,
-  Box,
-  MenuItem,
   Text,
   useDisclosure,
-  Button,
 } from "@chakra-ui/react";
-import React from "react";
 import OrderItemCard from "./OrderItemCard";
-import { axiosInstance } from "@/services/apiClient";
-import { useRouter } from "next/navigation";
 
 const OrderCard = ({
   orderObj,

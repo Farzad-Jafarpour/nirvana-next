@@ -1,11 +1,10 @@
 "use client";
 import { useOrders } from "@/hooks/useSections";
-import { Box } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import OrderCard from "./_components/OrderCard";
-import { useRouter } from "next/navigation";
 import { axiosInstance } from "@/services/apiClient";
+import { Box } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
+import OrderCard from "./_components/OrderCard";
 
 const OrdersPage = () => {
   const { data: initialData } = useOrders();

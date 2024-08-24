@@ -33,15 +33,19 @@ const useFoodStore = create<FoodStore>((set) => ({
 
   foodCartPrice: (foods: CartItem[]) => {
     return foods.reduce((total, food) => {
-      const foodTotal = food.price * food.count;
-      const extraItemsTotal = food.extraItems
+      let foodTotal = food.price * food.count;
+      let extraItemsTotal = food.extraItems
         ? food.extraItems.reduce(
             (extraTotal, extraItem) =>
               extraTotal + extraItem.price * (extraItem.count || 1),
             0
           )
         : 0;
-      return total + foodTotal + extraItemsTotal;
+      if (food.isTax ) {
+        return total + foodTotal * 1.1 + extraItemsTotal * 1.1;
+      } else {
+        return total + foodTotal + extraItemsTotal;
+      }
     }, 0);
   },
 

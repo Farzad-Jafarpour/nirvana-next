@@ -1,3 +1,4 @@
+import { colorPalette } from "@/assets/constants";
 import { MenuItemType } from "@/types/menu";
 import {
   Box,
@@ -14,7 +15,7 @@ import React from "react";
 
 const MenuItem = ({ food }: { food: MenuItemType }) => {
   return (
-    <Card m={2}>
+    <Card bg={colorPalette.third} color={colorPalette.nav} m={2}>
       <CardBody>
         <Flex alignItems="center">
           <Heading as="h4" fontSize="lg" fontFamily="fontBold">
@@ -23,7 +24,7 @@ const MenuItem = ({ food }: { food: MenuItemType }) => {
           <Spacer />
           <Text>{food.isAvailable === true ? "موجود" : "ناموجود"}</Text>
           <Spacer />
-          <Box bg="teal.400" borderRadius="xl" p={2}>
+          <Box bg={colorPalette.nav} color={"#000"} borderRadius="5px" p={2}>
             <Link href={`food/${food.id}`}>تغییر</Link>
           </Box>
         </Flex>

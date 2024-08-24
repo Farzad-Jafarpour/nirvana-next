@@ -24,6 +24,8 @@ type FoodFormType = MenuItemType & {
   image?: FileList;
 };
 
+const valueAsBoolean = (value: string) => value === "true";
+
 export default function FoodForm({ food }: { food?: FoodFormType }) {
   const router = useRouter();
   const { data: foodData } = useMenuItems();
@@ -33,26 +35,15 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
   const {
     handleSubmit,
     register,
+    watch,
     formState: { errors, isSubmitting },
-  } = useForm<FoodFormType>({
-    defaultValues: {
-      title: food?.title || "",
-      price: food?.price || 0,
-      hasExtra: food?.hasExtra || false,
-      isAvailable: food?.isAvailable || false,
-      isNew: food?.isNew || false,
-      isLarge: food?.isLarge || false,
-      isTax: food?.isTax || false,
-      isEnable: food?.isEnable || false,
-    },
-  });
+  } = useForm<FoodFormType>({});
 
   const styles = {
     container: {
       w: "100%",
       p: "5px",
       bg: colorPalette.primary,
-      borderRadius: "5px",
       boxShadow: "md",
       color: "black",
     },
@@ -80,6 +71,10 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
       background: "#38B2AC",
     },
     itemContainer: {
+      display: "flex",
+      flexDirection: { base: "column", sm: "row" },
+      justifyContent: "center",
+      alignItems: "center",
       width: "100%",
     },
     item: {
@@ -139,13 +134,14 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
           <Flex sx={styles.itemContainer}>
             <Box sx={styles.item}>
               <FormControl isInvalid={!!errors.title}>
-                <FormLabel sx={styles.labels} htmlFor="title">
+                <FormLabel sx={styles.labels} htmlFor="price">
                   نام غذا
                 </FormLabel>
                 <Input
                   id="title"
                   placeholder="نام غذا"
                   sx={styles.inputs}
+                  defaultValue={food?.title}
                   {...register("title", {
                     required: "نام غذا را وارد کنید",
                   })}
@@ -165,6 +161,7 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
                   id="price"
                   placeholder="قیمت"
                   sx={styles.inputs}
+                  defaultValue={food?.price}
                   {...register("price", {
                     required: "قیمت را وارد کنید",
                     valueAsNumber: true,
@@ -185,8 +182,9 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
                 <Select
                   id="hasExtra"
                   placeholder="وضعیت آیتم اضافه را انتخاب کنید"
+                  defaultValue={`${food?.hasExtra}`}
                   {...register("hasExtra", {
-                    setValueAs: (value) => value === "true",
+                    setValueAs: valueAsBoolean,
                   })}
                 >
                   <option style={styles.selectOptions} value="true">
@@ -209,8 +207,9 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
                 <Select
                   id="isTax"
                   placeholder="وضعیت مالیات را انتخاب کنید"
+                  defaultValue={`${food?.isTax}`}
                   {...register("isTax", {
-                    setValueAs: (value) => value === "true",
+                    setValueAs: valueAsBoolean,
                   })}
                 >
                   <option style={styles.selectOptions} value="true">
@@ -236,8 +235,9 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
                 <Select
                   id="isAvailable"
                   placeholder="وضعیت غذا را انتخاب کنید"
+                  defaultValue={`${food?.isAvailable}`}
                   {...register("isAvailable", {
-                    setValueAs: (value) => value === "true",
+                    setValueAs: valueAsBoolean,
                   })}
                 >
                   <option style={styles.selectOptions} value="true">
@@ -260,8 +260,9 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
                 <Select
                   id="isNew"
                   placeholder="وضعیت جدید بودن غذا را انتخاب کنید"
+                  defaultValue={`${food?.isNew}`}
                   {...register("isNew", {
-                    setValueAs: (value) => value === "true",
+                    setValueAs: valueAsBoolean,
                   })}
                 >
                   <option style={styles.selectOptions} value="true">
@@ -284,8 +285,9 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
                 <Select
                   id="isEnable"
                   placeholder="وضعیت فعال بودن را انتخاب کنید"
+                  defaultValue={`${food?.isEnable}`}
                   {...register("isEnable", {
-                    setValueAs: (value) => value === "true",
+                    setValueAs: valueAsBoolean,
                   })}
                 >
                   <option style={styles.selectOptions} value="true">
@@ -310,8 +312,9 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
                 <Select
                   id="isLarge"
                   placeholder="وضعیت بزرگ بودن آیتم را انتخاب کنید"
+                  defaultValue={`${food?.isLarge}`}
                   {...register("isLarge", {
-                    setValueAs: (value) => value === "true",
+                    setValueAs: valueAsBoolean,
                   })}
                 >
                   <option style={styles.selectOptions} value="true">
@@ -362,9 +365,7 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
               sx={{ padding: "5px" }}
               type="file"
               variant="pill"
-              {...register("image", {
-                required: "تصویر را انتخاب کنید",
-              })}
+              {...register("image", {})}
             />
             <FormErrorMessage>
               {errors.image && errors.image.message}

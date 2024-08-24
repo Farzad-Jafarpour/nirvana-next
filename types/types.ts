@@ -20,6 +20,7 @@ export interface FoodProps {
   isNew?: boolean;
   isLarge?: boolean;
   isAvailable: boolean;
+  isTax: boolean;
 }
 
 export interface DataListProps {
@@ -44,6 +45,7 @@ export interface CartItem {
   title: string;
   price: number;
   count: number;
+  isTax: boolean;
   extraItems?: ExtraItemsList[];
 }
 export interface FoodStore {

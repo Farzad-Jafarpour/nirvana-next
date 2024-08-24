@@ -92,6 +92,7 @@ const NewFoodRenderer = () => {
             isNew={item?.isNew}
             isLarge={item?.isLarge}
             isAvailable={item.isAvailable}
+            isTax = {item.isTax}
           />
         )
       )}
