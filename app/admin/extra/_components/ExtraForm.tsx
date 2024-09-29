@@ -11,11 +11,21 @@ import {
   Input,
   Button,
   Select,
+  FormErrorMessage,
+  Spacer,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const styles = {
+  container: {
+    w: "100%",
+    p: "5px",
+    bg: colorPalette.primary,
+    boxShadow: "md",
+    color: "black",
+  },
   labels: {
     margin: "5px",
   },
@@ -40,52 +50,85 @@ const styles = {
     background: "#38B2AC",
   },
   itemContainer: {
+    display: "flex",
+    flexDirection: { base: "column", sm: "row" },
+    justifyContent: "center",
+    alignItems: "center",
     width: "100%",
   },
   item: {
     width: "100%",
     margin: "5px",
   },
+  btnContainer: {
+    display: "flex",
+    width: "150px",
+    margin: "5px",
+    padding: "5px",
+    direction: "row",
+  },
+};
+
+type Inputs = {
+  category: string;
+  price: number;
+  title: string;
 };
 
 const ExtraForm = ({ extra }: { extra?: ExtraType }) => {
   const router = useRouter();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm<Inputs>();
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState(0);
   const [category, setCategory] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const data = { title, price, category };
+  // const onSubmit = async (e: React.FormEvent) => {
+  //   // e.preventDefault();
+  //   // const data = { title, price, category };
+  //   // if (extra)
+  //   //   await axiosInstance
+  //   //     .patch(`extra/${extra.id}`, data)
+  //   //     .then((res) => res.data);
+  //   // else await axiosInstance.post("extra", data).then((res) => res.data);
+  //   // router.push("/admin/extra");
+  // };
+
+  const onSubmit = handleSubmit(async (data: Inputs) => {
     if (extra)
       await axiosInstance
         .patch(`extra/${extra.id}`, data)
         .then((res) => res.data);
     else await axiosInstance.post("extra", data).then((res) => res.data);
     router.push("/admin/extra");
-  };
+  });
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={onSubmit}>
       <VStack spacing={4}>
         <Flex sx={styles.itemContainer}>
           <Box sx={styles.item}>
-            <FormControl>
-              <FormLabel sx={styles.labels} htmlFor="price">
-                نام غذا
+            <FormControl isInvalid={!!errors.title}>
+              <FormLabel sx={styles.labels} htmlFor="title">
+                عنوان
               </FormLabel>
               <Input
                 id="title"
-                placeholder="نام افزودنی"
+                placeholder="عنوان"
                 sx={styles.inputs}
-                defaultValue={extra?.title}
-                onChange={(e) => setTitle(e.target.value)}
-                required
+                {...register("title", { required: "عنوان را وارد کنید" })}
               />
+              <FormErrorMessage>
+                {errors.title && errors.title.message}
+              </FormErrorMessage>
             </FormControl>
           </Box>
+          <Spacer />
           <Box sx={styles.item}>
-            <FormControl>
+            <FormControl isInvalid={!!errors.price}>
               <FormLabel sx={styles.labels} htmlFor="price">
                 قیمت
               </FormLabel>
@@ -93,47 +136,62 @@ const ExtraForm = ({ extra }: { extra?: ExtraType }) => {
                 id="price"
                 placeholder="قیمت"
                 sx={styles.inputs}
-                defaultValue={extra?.price}
-                onChange={(e) => setPrice(Number(e.target.value))}
-                required
+                {...register("price", {
+                  required: "قیمت را وارد کنید",
+                  valueAsNumber: true,
+                  validate: (value) => !isNaN(value) || "قیمت باید عدد باشد",
+                })}
               />
+              <FormErrorMessage>
+                {errors.price && errors.price.message}
+              </FormErrorMessage>
             </FormControl>
           </Box>
-        </Flex>
-
-        <Flex sx={styles.itemContainer}>
+          <Spacer />
           <Box sx={styles.item}>
-            <FormControl>
-              <FormLabel sx={styles.labels} htmlFor="details">
+            <FormControl isInvalid={!!errors.category}>
+              <FormLabel sx={styles.labels} htmlFor="category">
                 دسته بندی
               </FormLabel>
               <Select
                 id="category"
                 placeholder="دسته بندی را انتخاب کنید"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                required
+                {...register("category", {
+                  required: "دسته بندی را وارد کنید",
+                })}
               >
-                <option style={styles.selectOptions} value="food">
-                  غذا
-                </option>
-                <option style={styles.selectOptions} value="breakfast">
-                  صبحانه
-                </option>
-                <option style={styles.selectOptions} value="cold">
-                  سرد
-                </option>
-                <option style={styles.selectOptions} value="hot">
-                  گرم
-                </option>
+                <option value="food">غذا</option>
+                <option value="cold">سرد</option>
+                <option value="hot">گرم</option>
+                <option value="breakfast">صبحانه</option>
               </Select>
+              <FormErrorMessage>
+                {errors.category && errors.category.message}
+              </FormErrorMessage>
             </FormControl>
           </Box>
         </Flex>
 
-        <Button bg={colorPalette.third} type="submit">
-          ارسال
-        </Button>
+        <Box sx={styles.btnContainer}>
+          <Button
+            width="60px"
+            bg={colorPalette.third}
+            type="submit"
+            isLoading={isSubmitting}
+          >
+            ارسال
+          </Button>
+          <Spacer />
+          <Button
+            width="60px"
+            bg={colorPalette.contrast}
+            onClick={() => {
+              router.push("/admin/extra");
+            }}
+          >
+            لغو
+          </Button>
+        </Box>
       </VStack>
     </form>
   );

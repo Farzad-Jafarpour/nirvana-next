@@ -1,8 +1,10 @@
 "use client";
 import { Flex } from "@chakra-ui/react";
 import { AnimatedLogo, ItemRenderer } from "../components/common";
-import Navbar from "../components/Navbar";
 import { BaseUrl } from "@/assets/constants";
+import Navbar from "@/app/components/Navbar";
+
+import React from "react";
 
 const url = BaseUrl + "land.webp";
 

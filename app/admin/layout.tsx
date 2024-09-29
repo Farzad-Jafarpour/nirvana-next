@@ -2,6 +2,7 @@
 import { Box } from "@chakra-ui/react";
 import React from "react";
 import AdminNavbar from "./_components/AdminNavbar";
+import Navbar from "../menu/[category]/Navbar/Navbar";
 
 const styles = {
   container: {
@@ -13,7 +14,6 @@ const styles = {
   content: {
     position: "absolute",
     top: "82px",
-    overflow: "hidden",
     width: "100%",
     flexGrow: 1,
     display: "flex",
@@ -31,7 +31,7 @@ const layout = ({ children }: RootLayoutProps) => {
   return (
     <Box>
       <Box sx={styles.container}>
-        <AdminNavbar />
+        <Navbar />
       </Box>
       <Box sx={styles.content} dir="rtl">
         {children}

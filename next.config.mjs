@@ -17,6 +17,12 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "storage.c2.liara.space",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
   devIndicators: {

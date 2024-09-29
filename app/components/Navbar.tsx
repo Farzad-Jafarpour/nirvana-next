@@ -1,4 +1,5 @@
 "use client";
+import React, { useEffect } from "react";
 import { colorPalette } from "@/assets/constants";
 import {
   Box,
@@ -17,7 +18,9 @@ import { FaBars, FaShoppingCart } from "react-icons/fa";
 import Logo from "./Logo";
 import useFoodStore from "../store";
 import ShoppingCartModal from "./ShoppingCartModal";
-import { useEffect } from "react";
+import useUserStore from "./../auth/store/store";
+import { jwtDecode } from "jwt-decode"; // Import jwt-decode
+import { useRouter } from "next/navigation"; // Import useRouter to handle routing
 
 const styles = {
   container: {
@@ -71,13 +74,45 @@ const styles = {
 };
 
 const Navbar = () => {
+  const router = useRouter();
   const foodCount = useFoodStore((state) => state.foods.length); // Get the count of items in the cart
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { user, setUser, clearUser } = useUserStore(); // Access setUser to restore user
+
+  // Restore user from token on page load
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded: any = jwtDecode(token); // Decode the token to get user info
+        setUser({
+          id: decoded.id,
+          username: decoded.username,
+          isAdmin: decoded.isAdmin,
+        });
+      } catch (error) {
+        console.error("Failed to decode token", error);
+        localStorage.removeItem("token");
+      }
+    }
+  }, [setUser]); // Only runs when the component mounts
+
+  const handleLogout = () => {
+    // Remove token from localStorage
+    localStorage.removeItem("token");
+
+    // Clear the user from Zustand
+    clearUser();
+
+    // Redirect to home page
+    router.push("/");
+  };
 
   return (
     <>
       <Flex sx={styles.container}>
         <Logo />
+
         <Heading sx={styles.heading} as="h1" size="xl">
           کافه نیروانا
         </Heading>
@@ -105,13 +140,47 @@ const Navbar = () => {
               icon={<FaBars style={styles.icon} />} // Use FaBars for the hamburger menu
               sx={styles.iconButton}
             />
-            <MenuList bg={colorPalette.primary} dir="rtl">
+            <MenuList
+              dir="rtl"
+              sx={{
+                maxHeight: "300px", // Set the max height to make the MenuList scrollable
+                overflowY: "auto", // Enable vertical scrolling
+                bg: colorPalette.primary,
+
+                /* Hide scrollbar for WebKit (Chrome, Safari) */
+                "::-webkit-scrollbar": {
+                  display: "none",
+                },
+
+                /* Hide scrollbar for Firefox */
+                scrollbarWidth: "none",
+
+                /* Optional: Add padding-right to prevent content from hiding behind the invisible scrollbar */
+                pr: "8px",
+              }}
+            >
               <Link href={"/"}>
                 <MenuItem sx={styles.menuItem}>خانه</MenuItem>
               </Link>
-              <Link href={"/auth/login"}>
-                <MenuItem sx={styles.menuItem}>ورود</MenuItem>
-              </Link>
+              {user && user.isAdmin ? (
+                <>
+                  <Link href={"/admin"}>
+                    <MenuItem sx={styles.menuItem}>پنل ادمین</MenuItem>
+                  </Link>
+                  <Link href={"/admin/food"}>
+                    <MenuItem sx={styles.menuItem}>افزودن غذا</MenuItem>
+                  </Link>
+                  <Link href={"/admin/extra"}>
+                    <MenuItem sx={styles.menuItem}>افزودن آیتم اضافی</MenuItem>
+                  </Link>
+                </>
+              ) : (
+                !user && (
+                  <Link href={"/auth/login"}>
+                    <MenuItem sx={styles.menuItem}>ورود</MenuItem>
+                  </Link>
+                )
+              )}
               <Link href={"/menu/menuitems"}>
                 <MenuItem sx={styles.menuItem}>منو</MenuItem>
               </Link>
@@ -127,6 +196,11 @@ const Navbar = () => {
               <Link href={"/menu/hot"}>
                 <MenuItem sx={styles.menuItem}>بار گرم</MenuItem>
               </Link>
+              {user && (
+                <MenuItem sx={styles.menuItem} onClick={handleLogout}>
+                  خروج
+                </MenuItem>
+              )}
             </MenuList>
           </Menu>
         </Flex>

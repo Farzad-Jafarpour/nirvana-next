@@ -7,8 +7,6 @@ interface MenuLayoutProps {
 }
 
 const MenuLayout = ({ params, children }: MenuLayoutProps) => {
- 
-
   const styles = {
     container: {
       position: "fixed",

@@ -30,14 +30,18 @@ export async function POST(request: Request) {
 
   const isValid = await bcrypt.compare(password, user.password);
 
-  if (!isValid && user.isAdmin === false) {
+  if (!isValid) {
     return NextResponse.json(
       { message: "Invalid username or password" },
       { status: 401 }
     );
   }
 
-  const token = signToken({ id: user.id, username: user.username });
+  const token = signToken({
+    id: user.id,
+    username: user.username,
+    isAdmin: user.isAdmin!,
+  });
 
   return NextResponse.json(
     { message: "Sign in successful", token },

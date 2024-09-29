@@ -1,100 +1,115 @@
 "use client";
-import { BaseUrl, colorPalette } from "@/assets/constants";
+import { colorPalette } from "@/assets/constants";
 import { axiosInstance } from "@/services/apiClient";
 import {
   Box,
   Button,
   Flex,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Input,
   Select,
   Spacer,
   VStack,
 } from "@chakra-ui/react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
-const url = BaseUrl + "logo.webp";
-
-const styles = {
-  container: {
-    w: "100%",
-    p: "5px",
-    bg: colorPalette.primary,
-    borderRadius: "5px",
-    boxShadow: "md",
-    color: "black",
-  },
-  labels: {
-    margin: "5px",
-  },
-  inputs: {
-    bg: colorPalette.third,
-    "&::placeholder": {
-      opacity: 1,
-      color: "black",
-    },
-  },
-  fileInput: {
-    display: "none",
-  },
-  fileInputLabel: {
-    display: "inline-block",
-    padding: "8px 12px",
-    border: "1px solid #ccc",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-  selectOptions: {
-    background: "#38B2AC",
-  },
-  itemContainer: {
-    width: "100%",
-  },
-  item: {
-    width: "100%",
-    margin: "5px",
-  },
-  btnContainer: {
-    display: "flex",
-    width: "150px",
-    margin: "5px",
-    padding: "5px",
-    direction: "row",
-  },
+type Inputs = {
+  category: string;
+  image: FileList;
+  title: string;
 };
 
 export default function CategoryForm() {
   const router = useRouter();
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("");
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm<Inputs>();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const data = await axiosInstance
-      .post("section", {
-        title: title,
-        category: category,
-        icon: url,
-      })
-      .then((res) => res.data);
-    router.push("/admin/food");
+  const styles = {
+    container: {
+      w: "100%",
+      p: "5px",
+      bg: colorPalette.primary,
+      boxShadow: "md",
+      color: "black",
+    },
+    labels: {
+      margin: "5px",
+    },
+    inputs: {
+      bg: colorPalette.third,
+      "&::placeholder": {
+        opacity: 1,
+        color: "black",
+      },
+    },
+    fileInput: {
+      display: "none",
+    },
+    fileInputLabel: {
+      display: "inline-block",
+      padding: "8px 12px",
+      border: "1px solid #ccc",
+      borderRadius: "4px",
+      cursor: "pointer",
+    },
+    selectOptions: {
+      background: "#38B2AC",
+    },
+    itemContainer: {
+      display: "flex",
+      flexDirection: { base: "column", sm: "row" },
+      justifyContent: "center",
+      alignItems: "center",
+      width: "100%",
+    },
+    item: {
+      width: "100%",
+      margin: "5px",
+    },
+    btnContainer: {
+      display: "flex",
+      width: "150px",
+      margin: "5px",
+      padding: "5px",
+      direction: "row",
+    },
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) router.push("/auth/login");
-  }, [router]);
+  const onSubmit = async (data: Inputs) => {
+    const formData = new FormData();
+    formData.append("category", data.category);
+    formData.append("title", data.title);
+
+    if (data.image && data.image[0]) {
+      formData.append("image", data.image[0]);
+    }
+
+    try {
+      const response = await axiosInstance.post("section", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      router.push("/admin/food");
+    } catch (error) {
+      console.error("Failed to submit form data:", error);
+    }
+  };
 
   return (
     <Box sx={styles.container}>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <VStack spacing={4}>
           <Flex sx={styles.itemContainer}>
             <Box sx={styles.item}>
-              <FormControl>
+              <FormControl isInvalid={!!errors.title}>
                 <FormLabel sx={styles.labels} htmlFor="title">
                   عنوان
                 </FormLabel>
@@ -102,44 +117,60 @@ export default function CategoryForm() {
                   id="title"
                   placeholder="عنوان"
                   sx={styles.inputs}
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  required
+                  {...register("title", { required: "عنوان را وارد کنید" })}
                 />
+                <FormErrorMessage>
+                  {errors.title && errors.title.message}
+                </FormErrorMessage>
               </FormControl>
             </Box>
             <Spacer />
             <Box sx={styles.item}>
-              <FormControl>
+              <FormControl isInvalid={!!errors.category}>
                 <FormLabel sx={styles.labels} htmlFor="category">
                   دسته بندی
                 </FormLabel>
                 <Select
                   id="category"
                   placeholder="دسته بندی را انتخاب کنید"
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  required
+                  {...register("category", {
+                    required: "دسته بندی را وارد کنید",
+                  })}
                 >
-                  <option style={styles.selectOptions} value="food">
-                    غذا
-                  </option>
-                  <option style={styles.selectOptions} value="cold">
-                    سرد
-                  </option>
-                  <option style={styles.selectOptions} value="hot">
-                    گرم
-                  </option>
-                  <option style={styles.selectOptions} value="breakfast">
-                    صبحانه
-                  </option>
+                  <option value="food">غذا</option>
+                  <option value="cold">سرد</option>
+                  <option value="hot">گرم</option>
+                  <option value="breakfast">صبحانه</option>
                 </Select>
+                <FormErrorMessage>
+                  {errors.category && errors.category.message}
+                </FormErrorMessage>
               </FormControl>
             </Box>
           </Flex>
 
+          <FormControl isInvalid={!!errors.image}>
+            <FormLabel sx={styles.labels} htmlFor="image">
+              تصویر
+            </FormLabel>
+            <Input
+              id="image"
+              sx={{ padding: "5px" }}
+              type="file"
+              variant="pill"
+              {...register("image")}
+            />
+            <FormErrorMessage>
+              {errors.image && errors.image.message}
+            </FormErrorMessage>
+          </FormControl>
           <Box sx={styles.btnContainer}>
-            <Button width="60px" bg={colorPalette.third} type="submit">
+            <Button
+              width="60px"
+              bg={colorPalette.third}
+              type="submit"
+              isLoading={isSubmitting}
+            >
               ارسال
             </Button>
             <Spacer />

@@ -1,7 +1,8 @@
 import { Box } from "@chakra-ui/react";
-import Navbar from "../Navbar/Navbar";
+
 import { colorPalette } from "@/assets/constants";
 import Categories from "../Categories/Categories";
+import Navbar from "@/app/components/Navbar";
 
 const Header: React.FC = () => {
   const headerStyle = {

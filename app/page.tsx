@@ -31,7 +31,7 @@ const styles = {
     display: "flex",
     margin: "2px",
     borderRadius: "10px",
-    minWidth: "200px",
+    minWidth: "180px",
     minHeight: "200px",
     flexDirection: "column",
     justifyContent: "center",

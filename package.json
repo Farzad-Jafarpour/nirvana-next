@@ -25,6 +25,7 @@
     "bcryptjs": "^2.4.3",
     "framer-motion": "^11.3.17",
     "jsonwebtoken": "^9.0.2",
+    "jwt-decode": "^4.0.0",
     "next": "14.2.5",
     "next-auth": "^4.24.7",
     "react": "^18",

@@ -46,6 +46,7 @@ const Food: React.FC<FoodProps> = ({
   category,
   isNew,
   isLarge,
+  isTax,
 }) => {
   const [categoryTitle, setCategoryTitle] = useState("");
   const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(
@@ -172,13 +173,15 @@ const Food: React.FC<FoodProps> = ({
     onDetailsOpen();
   };
 
-  const handleAddFood = () => {
+  const handleAddFood = (input: boolean) => {
     const food = {
       id,
       title,
       price,
       count: 1,
+      isTax,
     };
+
     addFood(food);
   };
 
@@ -188,7 +191,7 @@ const Food: React.FC<FoodProps> = ({
 
   const handleSwipeLeft = () => {
     setSwipeDirection("left");
-    handleAddFood();
+    handleAddFood(isTax);
     setTimeout(() => setSwipeDirection(null), 300);
   };
 
@@ -243,7 +246,13 @@ const Food: React.FC<FoodProps> = ({
                   )}
                   {existingFoodIndex !== -1 && (
                     <Center>
-                      <Button size="xs" sx={styles.btn} onClick={handleAddFood}>
+                      <Button
+                        size="xs"
+                        sx={styles.btn}
+                        onClick={() => {
+                          handleAddFood(isTax);
+                        }}
+                      >
                         <Text fontSize="3xl" lineHeight="1">
                           +
                         </Text>
@@ -263,7 +272,13 @@ const Food: React.FC<FoodProps> = ({
                     </Center>
                   )}
                   {existingFoodIndex === -1 && (
-                    <Button size="xs" sx={styles.btn} onClick={handleAddFood}>
+                    <Button
+                      size="xs"
+                      sx={styles.btn}
+                      onClick={() => {
+                        handleAddFood(isTax);
+                      }}
+                    >
                       <Text fontSize="3xl" lineHeight="1">
                         +
                       </Text>
@@ -304,7 +319,13 @@ const Food: React.FC<FoodProps> = ({
                 )}
                 {existingFoodIndex !== -1 && (
                   <Center>
-                    <Button size="xs" sx={styles.btn} onClick={handleAddFood}>
+                    <Button
+                      size="xs"
+                      sx={styles.btn}
+                      onClick={() => {
+                        handleAddFood(isTax);
+                      }}
+                    >
                       <Text fontSize="3xl" lineHeight="1">
                         +
                       </Text>
@@ -324,7 +345,13 @@ const Food: React.FC<FoodProps> = ({
                   </Center>
                 )}
                 {existingFoodIndex === -1 && (
-                  <Button size="xs" sx={styles.btn} onClick={handleAddFood}>
+                  <Button
+                    size="xs"
+                    sx={styles.btn}
+                    onClick={() => {
+                      handleAddFood(isTax);
+                    }}
+                  >
                     <Text fontSize="3xl" lineHeight="1">
                       +
                     </Text>

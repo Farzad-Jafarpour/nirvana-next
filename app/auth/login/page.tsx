@@ -11,9 +11,10 @@ import {
   InputGroup,
   InputLeftElement,
 } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
 import Navbar from "@/app/components/Navbar";
 import { useRouter } from "next/navigation";
+import { jwtDecode } from "jwt-decode"; // To decode JWT token and extract user info
+import useUserStore from "../store/store";
 
 const styles = {
   container: {
@@ -37,31 +38,12 @@ const styles = {
     },
   },
   passwordInput: {
-    paddingRight: "16px", // Ensure the placeholder text has 16px padding on the right
+    paddingRight: "16px",
     bg: colorPalette.third,
     "&::placeholder": {
       opacity: 0.6,
       color: "black",
     },
-  },
-  fileInput: {
-    display: "none",
-  },
-  fileInputLabel: {
-    display: "inline-block",
-    padding: "8px 12px",
-    border: "1px solid #ccc",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-  selectOptions: {
-    background: "#38B2AC",
-  },
-  itemContainer: {
-    width: "100%",
-  },
-  item: {
-    margin: "5px",
   },
   btn: {
     bg: colorPalette.third,
@@ -70,10 +52,12 @@ const styles = {
     marginY: "5px",
   },
 };
+
 const LoginForm: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { setUser } = useUserStore(); // Zustand function to set user in store
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -94,8 +78,20 @@ const LoginForm: React.FC = () => {
 
     if (response.ok) {
       const data = await response.json();
-      localStorage.setItem("token", data.token); // Handle token storage
-      router.push("/admin");
+      localStorage.setItem("token", data.token); // Store the token in local storage
+
+      // Decode JWT token to get user info
+      const decoded: any = jwtDecode(data.token);
+
+      // Set the user in Zustand global store
+      setUser({
+        id: decoded.id,
+        username: decoded.username,
+        isAdmin: decoded.isAdmin,
+      });
+
+      // Redirect to admin page
+      router.push("/");
     } else {
       const errorData = await response.json();
       setError(errorData.message);
@@ -139,7 +135,7 @@ const LoginForm: React.FC = () => {
                 id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="رمز عبور"
-                sx={styles.passwordInput} // Use a separate style for the password input
+                sx={styles.passwordInput}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
