@@ -13,6 +13,7 @@ import {
 import React from "react";
 import MenuItem from "./MenuItem";
 import { colorPalette } from "@/assets/constants";
+import Link from "next/link";
 
 const Section = ({ sectionObj }: { sectionObj: SectionType }) => {
   const { isOpen, onToggle } = useDisclosure();
@@ -32,6 +33,11 @@ const Section = ({ sectionObj }: { sectionObj: SectionType }) => {
           </Heading>
           <Spacer />
           <Text>{sectionObj.category}</Text>
+          <Spacer />
+
+          <Box bg={colorPalette.nav} color={"#000"} borderRadius="5px" p={2}>
+            <Link href={`section/${sectionObj.id}`}>تغییر</Link>
+          </Box>
         </Flex>
         <Collapse in={isOpen} animateOpacity>
           <Box mt={4}>
