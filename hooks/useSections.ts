@@ -27,3 +27,9 @@ export const usePaidOrders = () => {
     axiosInstance.get<orderType[]>("pay").then((res) => res.data)
   );
 };
+
+export const useAdminMenu = () => {
+  return useQuery<SectionType[], Error>(["adminData"], () =>
+    axiosInstance.get<SectionType[]>("admin").then((res) => res.data)
+  );
+};

@@ -1,14 +1,14 @@
 "use client";
-import { useMenuItems } from "@/hooks/useSections";
+import { useAdminMenu } from "@/hooks/useSections";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import Section from "./_components/Section";
 
 const FoodList = () => {
-  const { data } = useMenuItems();
+  const { data } = useAdminMenu();
 
   return (
-    <Box w="95%" h="100vh" p={5} >
+    <Box w="95%" h="100vh" p={5}>
       <Flex gap={3}>
         <Button bg="teal.400">
           <Link href="food/new">غذای جدید</Link>
