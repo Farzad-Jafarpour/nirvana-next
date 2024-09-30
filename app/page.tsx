@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AnimatedLogo, ItemRenderer, ToastRenderer } from "./components/common";
 import Navbar from "./components/Navbar";
 import { BaseUrl } from "@/assets/constants";
+import React from "react";
 
 const url = BaseUrl + "land.webp";
 

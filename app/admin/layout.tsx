@@ -1,7 +1,7 @@
 "use client";
 import { Box } from "@chakra-ui/react";
 import React from "react";
-import Navbar from "../menu/[category]/Navbar/Navbar";
+import Navbar from "../components/Navbar";
 
 const styles = {
   container: {

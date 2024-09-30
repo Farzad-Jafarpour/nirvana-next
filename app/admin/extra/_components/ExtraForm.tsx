@@ -86,17 +86,6 @@ const ExtraForm = ({ extra }: { extra?: ExtraType }) => {
   const [price, setPrice] = useState(0);
   const [category, setCategory] = useState("");
 
-  // const onSubmit = async (e: React.FormEvent) => {
-  //   // e.preventDefault();
-  //   // const data = { title, price, category };
-  //   // if (extra)
-  //   //   await axiosInstance
-  //   //     .patch(`extra/${extra.id}`, data)
-  //   //     .then((res) => res.data);
-  //   // else await axiosInstance.post("extra", data).then((res) => res.data);
-  //   // router.push("/admin/extra");
-  // };
-
   const onSubmit = handleSubmit(async (data: Inputs) => {
     if (extra)
       await axiosInstance
@@ -119,6 +108,7 @@ const ExtraForm = ({ extra }: { extra?: ExtraType }) => {
                 id="title"
                 placeholder="عنوان"
                 sx={styles.inputs}
+                defaultValue={extra?.title}
                 {...register("title", { required: "عنوان را وارد کنید" })}
               />
               <FormErrorMessage>
@@ -136,6 +126,7 @@ const ExtraForm = ({ extra }: { extra?: ExtraType }) => {
                 id="price"
                 placeholder="قیمت"
                 sx={styles.inputs}
+                defaultValue={extra?.price}
                 {...register("price", {
                   required: "قیمت را وارد کنید",
                   valueAsNumber: true,
@@ -156,6 +147,7 @@ const ExtraForm = ({ extra }: { extra?: ExtraType }) => {
               <Select
                 id="category"
                 placeholder="دسته بندی را انتخاب کنید"
+                defaultValue={extra?.category}
                 {...register("category", {
                   required: "دسته بندی را وارد کنید",
                 })}

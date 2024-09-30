@@ -163,9 +163,6 @@ const Navbar = () => {
               </Link>
               {user && user.isAdmin ? (
                 <>
-                  <Link href={"/admin"}>
-                    <MenuItem sx={styles.menuItem}>پنل ادمین</MenuItem>
-                  </Link>
                   <Link href={"/admin/food"}>
                     <MenuItem sx={styles.menuItem}>افزودن غذا</MenuItem>
                   </Link>
