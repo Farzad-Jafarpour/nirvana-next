@@ -9,14 +9,21 @@ import {
   Box,
   useDisclosure,
   Text,
+  IconButton,
 } from "@chakra-ui/react";
 import React from "react";
 import MenuItem from "./MenuItem";
 import { colorPalette } from "@/assets/constants";
 import Link from "next/link";
+import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 
 const Section = ({ sectionObj }: { sectionObj: SectionType }) => {
   const { isOpen, onToggle } = useDisclosure();
+
+  // Function to stop the event from propagating to parent elements
+  const handleLinkClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
 
   return (
     <Card
@@ -35,9 +42,27 @@ const Section = ({ sectionObj }: { sectionObj: SectionType }) => {
           <Text>{sectionObj.category}</Text>
           <Spacer />
 
-          <Box bg={colorPalette.nav} color={"#000"} borderRadius="5px" p={2}>
-            <Link href={`section/${sectionObj.id}`}>تغییر</Link>
+          <Box
+            bg={colorPalette.nav}
+            color={"#000"}
+            borderRadius="5px"
+            p={2}
+            zIndex="100"
+            onClick={handleLinkClick} // Prevent event propagation
+          >
+            <Link href={`categories/${sectionObj.id}`}>تغییر</Link>
           </Box>
+
+          <IconButton
+            aria-label="Toggle collapse"
+            icon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
+            onClick={onToggle}
+            m={2}
+            bg={colorPalette.nav}
+            color={"#000"}
+            borderRadius="5px"
+            _hover={{ bg: colorPalette.primary }}
+          />
         </Flex>
         <Collapse in={isOpen} animateOpacity>
           <Box mt={4}>

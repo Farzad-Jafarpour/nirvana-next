@@ -141,6 +141,7 @@ const CategoryForm = ({ section }: { section: SectionType }) => {
                 <Select
                   id="category"
                   placeholder="دسته بندی را انتخاب کنید"
+                  defaultValue={section?.category}
                   {...register("category", {
                     required: "دسته بندی را وارد کنید",
                   })}
