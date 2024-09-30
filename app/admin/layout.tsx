@@ -1,7 +1,6 @@
 "use client";
 import { Box } from "@chakra-ui/react";
 import React from "react";
-import AdminNavbar from "./_components/AdminNavbar";
 import Navbar from "../menu/[category]/Navbar/Navbar";
 
 const styles = {

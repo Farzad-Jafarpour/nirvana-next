@@ -112,7 +112,6 @@ const Navbar = () => {
     <>
       <Flex sx={styles.container}>
         <Logo />
-
         <Heading sx={styles.heading} as="h1" size="xl">
           کافه نیروانا
         </Heading>
