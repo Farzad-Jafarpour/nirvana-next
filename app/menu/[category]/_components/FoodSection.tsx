@@ -57,6 +57,7 @@ const FoodSection: React.FC<FoodSectionProps> = ({
   foods,
   category,
 }) => {
+  if (foods.length === 0) return null;
   return (
     <Box id={id} sx={styles.container}>
       <Box sx={styles.sectionTitle}>

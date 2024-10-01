@@ -1,5 +1,5 @@
 "use client";
-import { useAdminMenu } from "@/hooks/useSections";
+import { useAdminMenu, useMenuItems } from "@/hooks/useSections";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import Section from "./_components/Section";

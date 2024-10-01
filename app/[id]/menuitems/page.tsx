@@ -3,6 +3,7 @@ import { ItemRenderer, AnimatedLogo } from "@/app/components/common";
 import Navbar from "@/app/components/Navbar";
 import { BaseUrl } from "@/assets/constants";
 import { Flex } from "@chakra-ui/react";
+import React from "react";
 
 const url = BaseUrl + "land.webp";
 

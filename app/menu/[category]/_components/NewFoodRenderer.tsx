@@ -1,11 +1,8 @@
+import Loading from "@/app/components/Loading";
 import { useMenuItems } from "@/hooks/useSections";
-import FoodSection from "./FoodSection";
-import useMenuStore from "../../../stores/menuStore";
-import React from "react";
+import { MenuItemType } from "@/types/menu";
 import { Box } from "@chakra-ui/react";
 import Food from "./food/Food";
-import { MenuItemType } from "@/types/menu";
-import Loading from "@/app/components/Loading";
 
 const NewFoodRenderer = () => {
   const { data, error, isLoading } = useMenuItems();
@@ -22,6 +19,8 @@ const NewFoodRenderer = () => {
         category: category.category,
       }))
   );
+
+  if (newFoods.length === 0) return null;
 
   const styles = {
     container: {
@@ -64,6 +63,7 @@ const NewFoodRenderer = () => {
       fontSize: "4xl",
     },
   };
+
   return (
     <Box id={"newFood"} sx={styles.container}>
       <Box sx={styles.sectionTitle}>
