@@ -16,9 +16,9 @@ import {
 import Link from "next/link";
 import { FaBars, FaShoppingCart } from "react-icons/fa";
 import Logo from "./Logo";
-import useFoodStore from "../store";
+import useFoodStore from "../stores/foodStore";
 import ShoppingCartModal from "./ShoppingCartModal";
-import useUserStore from "./../auth/store/store";
+import useUserStore from "../stores/userStore";
 import { jwtDecode } from "jwt-decode"; // Import jwt-decode
 import { useRouter } from "next/navigation"; // Import useRouter to handle routing
 
@@ -172,7 +172,7 @@ const Navbar = () => {
                 </>
               ) : (
                 !user && (
-                  <Link href={"/auth/login"}>
+                  <Link href={"/api/auth/login"}>
                     <MenuItem sx={styles.menuItem}>ورود</MenuItem>
                   </Link>
                 )

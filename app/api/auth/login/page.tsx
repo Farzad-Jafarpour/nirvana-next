@@ -14,7 +14,7 @@ import {
 import Navbar from "@/app/components/Navbar";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode"; // To decode JWT token and extract user info
-import useUserStore from "../store/store";
+import useUserStore from "../../../stores/userStore";
 
 const styles = {
   container: {

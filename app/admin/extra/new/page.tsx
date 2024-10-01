@@ -51,7 +51,7 @@ const NewExtra = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) router.push("/auth/login");
+    if (!token) router.push("/api/auth/login");
   }, [router]);
 
   return (

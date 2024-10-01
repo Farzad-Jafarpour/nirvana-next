@@ -1,4 +1,4 @@
-import useFoodStore from "@/app/store";
+import useFoodStore from "@/app/stores/foodStore";
 import { colorPalette } from "@/assets/constants";
 import { ExtraType } from "@/types/extra";
 import { Box, Button, Center, Spacer, Text } from "@chakra-ui/react";

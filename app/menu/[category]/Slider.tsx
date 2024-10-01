@@ -15,7 +15,7 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/css/thumbs";
 import CategoryItemRenderer from "./Categories/_components/CategoryItemRenderer";
-import useMenuStore from "./store";
+import useMenuStore from "../../stores/menuStore";
 
 const Slider = () => {
   // const prm = params;

@@ -2,7 +2,7 @@
 import { useMenuItems } from "@/hooks/useSections";
 import FoodList from "./_components/FoodList";
 import { SectionType } from "@/types/section";
-import useMenuStore from "./store";
+import useMenuStore from "../../stores/menuStore";
 
 const Menu = ({ params }: { params: { category: string } }) => {
   const { category } = params;

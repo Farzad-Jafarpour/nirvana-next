@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import NavbarCollapseRenderer from "./NavbarCollapseRenderer";
-import useFoodStore from "@/app/store";
+import useFoodStore from "@/app/stores/foodStore";
 import { colorPalette } from "@/assets/constants";
 
 const ShoppingCartModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Button, Center, Collapse, Spacer, Text } from "@chakra-ui/react";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
-import useFoodStore from "../store";
+import useFoodStore from "../stores/foodStore";
 import { ExtraItemsList } from "@/types/types";
 import { colorPalette } from "@/assets/constants";
 

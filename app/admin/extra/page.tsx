@@ -12,7 +12,7 @@ const ExtraList = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) router.push("/auth/login");
+    if (!token) router.push("/api/auth/login");
   }, [router]);
   return (
     <Box w="95%" h="100vh" p={5}>

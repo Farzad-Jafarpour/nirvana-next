@@ -17,7 +17,7 @@ import CustomModal from "./_components/CustomModal";
 import ExtraItems from "./_components/ExtraItems";
 import Details from "./_components/Details";
 import DetailsModal from "./_components/DetailsModal";
-import useFoodStore from "@/app/store";
+import useFoodStore from "@/app/stores/foodStore";
 // import useFoodStore from "components/menu/store";
 
 const breakpoints = {
@@ -199,7 +199,6 @@ const Food: React.FC<FoodProps> = ({
   };
 
   const handleAddFood = (input: boolean) => {
-
     const food = {
       id,
       title,

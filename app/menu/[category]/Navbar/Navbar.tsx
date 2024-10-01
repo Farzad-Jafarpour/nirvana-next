@@ -15,7 +15,7 @@ import {
 import React from "react";
 import { FaBars, FaShoppingCart } from "react-icons/fa"; // Import the shopping cart and hamburger menu icons
 import Link from "next/link";
-import useFoodStore from "@/app/store";
+import useFoodStore from "@/app/stores/foodStore";
 import Logo from "@/app/components/Logo";
 import ShoppingCartModal from "./NavbarModal";
 import { colorPalette } from "@/assets/constants";
@@ -109,7 +109,7 @@ const Navbar: React.FC = () => {
               <Link href={"/"}>
                 <MenuItem sx={styles.menuItem}>خانه</MenuItem>
               </Link>
-              <Link href={"/auth/login"}>
+              <Link href={"/api/auth/login"}>
                 <MenuItem sx={styles.menuItem}>ورود</MenuItem>
               </Link>
               <Link href={"/menu/menuitems"}>

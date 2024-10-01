@@ -1,7 +1,10 @@
+// app/admin/layout.tsx
 "use client";
 import { Box } from "@chakra-ui/react";
-import React from "react";
-import Navbar from "../components/Navbar";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Navbar from "../components/Navbar"; // Adjust the path if necessary
+import { jwtDecode } from "jwt-decode"; // Ensure this package is installed
 
 const styles = {
   container: {
@@ -26,7 +29,35 @@ interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-const layout = ({ children }: RootLayoutProps) => {
+// Change the function name to start with an uppercase letter
+const Layout: React.FC<RootLayoutProps> = ({ children }) => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true); // Loading state
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      router.push("/api/auth/login");
+    } else {
+      try {
+        const decoded: any = jwtDecode(token);
+        if (!decoded.isAdmin) {
+          router.push("/api/auth/login");
+        }
+      } catch (error) {
+        router.push("/api/auth/login");
+      } finally {
+        setIsLoading(false); // End loading state after checks
+      }
+    }
+  }, [router]);
+
+  // Show nothing or a loading state while checking auth
+  if (isLoading) {
+    return <div>Loading...</div>; // Show loading state while checking auth
+  }
+
   return (
     <Box>
       <Box sx={styles.container}>
@@ -39,4 +70,4 @@ const layout = ({ children }: RootLayoutProps) => {
   );
 };
 
-export default layout;
+export default Layout;

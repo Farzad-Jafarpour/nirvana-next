@@ -14,7 +14,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import useFoodStore from "../store";
+import useFoodStore from "../stores/foodStore";
 import { colorPalette } from "@/assets/constants";
 import NavbarCollapseRenderer from "./NavbarCollapseRenderer";
 import { axiosInstance } from "@/services/apiClient";

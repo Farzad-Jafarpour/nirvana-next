@@ -1,6 +1,6 @@
 import { useMenuItems } from "@/hooks/useSections";
 import FoodSection from "./FoodSection";
-import useMenuStore from "../store";
+import useMenuStore from "../../../stores/menuStore";
 import React from "react";
 import { Box } from "@chakra-ui/react";
 import Food from "./food/Food";
@@ -92,7 +92,7 @@ const NewFoodRenderer = () => {
             isNew={item?.isNew}
             isLarge={item?.isLarge}
             isAvailable={item.isAvailable}
-            isTax = {item.isTax}
+            isTax={item.isTax}
           />
         )
       )}
