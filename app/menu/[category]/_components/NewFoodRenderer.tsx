@@ -5,11 +5,12 @@ import React from "react";
 import { Box } from "@chakra-ui/react";
 import Food from "./food/Food";
 import { MenuItemType } from "@/types/menu";
+import Loading from "@/app/components/Loading";
 
 const NewFoodRenderer = () => {
   const { data, error, isLoading } = useMenuItems();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
   if (error) return <div>Error: {error.message}</div>;
 
   // Flatten the list of food items and filter for those with isNew: true

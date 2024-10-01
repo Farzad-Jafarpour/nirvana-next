@@ -3,6 +3,7 @@ import { useMenuItems } from "@/hooks/useSections";
 import FoodList from "./_components/FoodList";
 import { SectionType } from "@/types/section";
 import useMenuStore from "../../stores/menuStore";
+import Loading from "@/app/components/Loading";
 
 const Menu = ({ params }: { params: { category: string } }) => {
   const { category } = params;
@@ -13,7 +14,7 @@ const Menu = ({ params }: { params: { category: string } }) => {
   categorySetter(category);
   const { data, error, isLoading } = useMenuItems();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
   if (error) return <div>Error: {error.message}</div>;
   let foodItems: SectionType[] = [];
   switch (category) {

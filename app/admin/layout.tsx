@@ -1,10 +1,11 @@
 // app/admin/layout.tsx
 "use client";
-import { Box } from "@chakra-ui/react";
+import { Box, Spinner, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "../components/Navbar"; // Adjust the path if necessary
 import { jwtDecode } from "jwt-decode"; // Ensure this package is installed
+import Loading from "../components/Loading";
 
 const styles = {
   container: {
@@ -23,13 +24,21 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
   },
+  loadingContainer: {
+    flexGrow: 1,
+    display: "flex",
+    flexDirection: "column", // Set direction to column to stack spinner and text
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100vh", // Full height to center the spinner
+    textAlign: "center", // Center text
+  },
 };
 
 interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-// Change the function name to start with an uppercase letter
 const Layout: React.FC<RootLayoutProps> = ({ children }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true); // Loading state
@@ -53,9 +62,9 @@ const Layout: React.FC<RootLayoutProps> = ({ children }) => {
     }
   }, [router]);
 
-  // Show nothing or a loading state while checking auth
+  // Show spinner and loading message while checking auth
   if (isLoading) {
-    return <div>Loading...</div>; // Show loading state while checking auth
+    return <Loading />;
   }
 
   return (

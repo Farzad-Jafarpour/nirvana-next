@@ -5,6 +5,7 @@ import { ExtraItemsProps } from "@/types/types";
 import ExtraItemRenderer from "./ExtraItemRenderer";
 import { useExtraMenuItems } from "@/hooks/useSections";
 import { ExtraType } from "@/types/extra";
+import Loading from "@/app/components/Loading";
 // import sectionData from "data/foodSections.json";
 
 const styles = {
@@ -20,7 +21,7 @@ const styles = {
 const ExtraItems: React.FC<ExtraItemsProps> = ({ categoryTitle, foodId }) => {
   const { data, error, isLoading } = useExtraMenuItems();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
   if (error) return <div>Error: {error.message}</div>;
 
   const items: ExtraType[] = data!.filter(
