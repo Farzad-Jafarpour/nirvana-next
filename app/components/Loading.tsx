@@ -1,7 +1,7 @@
 // src/components/Loading.tsx
 "use client";
-import { Box, Spinner, Text } from "@chakra-ui/react";
 import React from "react";
+import { Box, Spinner, Text } from "@chakra-ui/react";
 
 interface LoadingProps {
   message?: string; // Optional loading message

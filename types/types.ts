@@ -53,7 +53,7 @@ export interface FoodStore {
   addFood: (food: CartItem) => void;
   removeFood: (id: number) => void;
   clearCart: () => void;
-  foodCartPrice: (foods: CartItem[]) => void;
+  foodCartPrice: (foods: CartItem[]) => number;
   addExtraItem: (extraItem: ExtraItemsList, foodId: number | null) => void;
   removeExtraItem: (id: number, foodId: number | null) => void;
 }

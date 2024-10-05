@@ -49,6 +49,7 @@ const Food: React.FC<FoodProps> = ({
   isAvailable,
   isTax,
 }) => {
+  const [showFullTitle, setShowFullTitle] = useState(false);
   const [categoryTitle, setCategoryTitle] = useState("");
   const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(
     null
@@ -168,6 +169,11 @@ const Food: React.FC<FoodProps> = ({
       zIndex: 1, // Ensure it's on top
       opacity: 0.8,
     },
+    titleText: {
+      fontSize: "xl",
+      color: " #000000 ",
+      cursor: "pointer", // Makes the title look clickable
+    },
   };
 
   const {
@@ -233,6 +239,15 @@ const Food: React.FC<FoodProps> = ({
     onSwipedRight: handleSwipeRight,
   } as SwipeableProps);
 
+  const handleTitleClick = () => {
+    setShowFullTitle(!showFullTitle);
+  };
+
+  const truncateTitle = (text: string, maxLength: number) => {
+    if (text.length <= maxLength) return text;
+    return text.slice(0, maxLength) + "...";
+  };
+
   return (
     <>
       {isLarge && (
@@ -247,8 +262,8 @@ const Food: React.FC<FoodProps> = ({
               <Image src={src} sx={styles.image} alt="food-image" />
             </Box>
             <Box flex="1">
-              <Text as="h3" fontSize="3xl" color={" #000000 "}>
-                {title}
+              <Text as="h3" sx={styles.titleText} onClick={handleTitleClick}>
+                {showFullTitle ? title : truncateTitle(title, 40)}
               </Text>
             </Box>
           </Flex>
@@ -331,8 +346,8 @@ const Food: React.FC<FoodProps> = ({
             <Image src={src} sx={styles.image} alt="food-image" />
           </Box>
           <Box sx={styles.textContainer}>
-            <Text as="h2" fontSize="xl" color={" #000000 "}>
-              {title}
+            <Text as="h3" sx={styles.titleText} onClick={handleTitleClick}>
+              {showFullTitle ? title : truncateTitle(title, 40)}
             </Text>
             <Button onClick={handleClick} sx={styles.btnSecondary}>
               برای انتخاب محتویات خود کلیک کنید

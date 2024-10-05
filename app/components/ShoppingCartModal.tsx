@@ -1,4 +1,6 @@
 "use client";
+import { colorPalette } from "@/assets/constants";
+import { axiosInstance } from "@/services/apiClient";
 import {
   Box,
   Button,
@@ -13,12 +15,10 @@ import {
   Spacer,
   Text,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import useFoodStore from "../stores/foodStore";
-import { colorPalette } from "@/assets/constants";
-import NavbarCollapseRenderer from "./NavbarCollapseRenderer";
-import { axiosInstance } from "@/services/apiClient";
 import { usePathname } from "next/navigation";
+import React, { useState } from "react";
+import useFoodStore from "../stores/foodStore";
+import NavbarCollapseRenderer from "./NavbarCollapseRenderer";
 
 // Function to transform data
 const transformData = (data: any) => {
@@ -56,7 +56,9 @@ const ShoppingCartModal: React.FC<Props> = ({ isOpen, onClose }) => {
   const addFood = useFoodStore((state) => state.addFood);
   const foodCartPrice = useFoodStore((state) => state.foodCartPrice);
 
-  const TotalPrice = foodCartPrice(foods);
+  const rawTotalPrice = foodCartPrice(foods) || 0; // This will no longer throw an error
+  const TotalPrice = Math.round(rawTotalPrice); // Rounding up to the nearest integer
+  const tax = Math.ceil(TotalPrice * (0.1 / 1.1));
 
   const styles = {
     container: {
@@ -98,6 +100,7 @@ const ShoppingCartModal: React.FC<Props> = ({ isOpen, onClose }) => {
     },
     modalFooter: {
       display: "flex",
+      flexDirection: "column",
       items: "center",
       justify: "center",
     },
@@ -189,17 +192,35 @@ const ShoppingCartModal: React.FC<Props> = ({ isOpen, onClose }) => {
         </ModalBody>
         <ModalFooter>
           <Box flex="1" dir="rtl" sx={styles.modalFooter}>
-            <Button sx={styles.btn} onClick={handleConfirm}>
-              ثبت سفارش
-            </Button>
-            <Center flex="1" sx={styles.totalPriceContainer}>
+            <Center
+              flex="1"
+              sx={styles.totalPriceContainer}
+              flexDirection={{ base: "column", md: "row" }}
+            >
               <Text>مجموع خرید: </Text>
               <Spacer />
               <Text>{`${TotalPrice} هزار تومان`}</Text>
             </Center>
-
+            <Center
+              flex="1"
+              sx={styles.totalPriceContainer}
+              flexDirection={{ base: "column", md: "row" }}
+            >
+              <Text>مقدار مالیات: </Text>
+              <Spacer />
+              <Text>{`${tax} هزار تومان`}</Text>
+            </Center>
+          </Box>
+          <Box flex="1" dir="rtl" sx={styles.modalFooter}>
             <Button sx={styles.btn} onClick={() => clearCart()}>
               خالی کردن سبد خرید
+            </Button>
+            <Button
+              sx={styles.btn}
+              isDisabled={true}
+              onClick={() => console.log("clicked")}
+            >
+              ثبت سفارش
             </Button>
           </Box>
         </ModalFooter>

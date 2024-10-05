@@ -41,7 +41,7 @@ const useFoodStore = create<FoodStore>((set) => ({
             0
           )
         : 0;
-      if (food.isTax ) {
+      if (food.isTax) {
         return total + foodTotal * 1.1 + extraItemsTotal * 1.1;
       } else {
         return total + foodTotal + extraItemsTotal;

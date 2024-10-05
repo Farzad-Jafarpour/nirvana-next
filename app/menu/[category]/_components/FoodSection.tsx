@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import Food from "./food/Food";
 import { MenuItemType } from "@/types/menu";
 
@@ -48,6 +48,12 @@ const styles = {
     display: "inline-block",
     marginX: "5px",
     fontSize: "4xl",
+  },
+  message: {
+    color: "white", // Set the text color
+    textAlign: "center", // Center the text
+    fontSize: "xl", // Set the font size
+    marginTop: "20px", // Add some margin
   },
 };
 

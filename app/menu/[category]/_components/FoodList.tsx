@@ -1,16 +1,8 @@
-import React from "react";
-import { Box } from "@chakra-ui/react";
-import NewFoodRenderer from "./NewFoodRenderer";
-import FoodSection from "./FoodSection";
 import { SectionType } from "@/types/section";
-import Navbar from "@/app/components/Navbar";
-
-const widthBreakpoints = {
-  base: "96vw",
-  md: "750px",
-  lg: "970px",
-  xl: "1170px",
-};
+import { Box, Text } from "@chakra-ui/react"; // Import Text from Chakra UI
+import React from "react";
+import FoodSection from "./FoodSection";
+import NewFoodRenderer from "./NewFoodRenderer";
 
 const styles = {
   container: {
@@ -20,6 +12,13 @@ const styles = {
     justifyContent: "center",
     margin: "15px",
   },
+  messageContainer: { height: "100vh" },
+  message: {
+    color: "teal", // Set the text color to match your theme
+    textAlign: "center", // Center the text
+    fontSize: "xl", // Set the font size
+    marginTop: "20px", // Add some margin
+  },
 };
 
 interface FoodListProps {
@@ -27,13 +26,31 @@ interface FoodListProps {
 }
 
 const FoodList: React.FC<FoodListProps> = ({ sections }) => {
-  //   const theme = extendTheme({ widthBreakpoints });
+  // Check if any FoodSection has foods
+  const hasFoodSections = sections.some(
+    (section) => section.menuItems.length > 0
+  );
 
   return (
-    <>
-      <Box sx={styles.container}>
-        <NewFoodRenderer />
-        {sections.map((section, id) => (
+    <Box sx={styles.container}>
+      <NewFoodRenderer />
+      {!hasFoodSections ? (
+        <Box
+          flexGrow={1}
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          height="90vh" // Full height to center content
+          textAlign="center"
+        >
+          <Text sx={styles.message}>
+            نیروانایی عزیز در حال به روز رسانی منو هستیم. به زودی غذاهای خوشمزه
+            نیروانا به منو اضافه میشن
+          </Text>
+        </Box>
+      ) : (
+        sections.map((section, id) => (
           <FoodSection
             key={id}
             id={`${section.id}`}
@@ -41,9 +58,9 @@ const FoodList: React.FC<FoodListProps> = ({ sections }) => {
             foods={section.menuItems}
             category={section.category}
           />
-        ))}
-      </Box>
-    </>
+        ))
+      )}
+    </Box>
   );
 };
 
