@@ -14,6 +14,7 @@ import {
   Input,
   Select,
   Spacer,
+  Textarea,
   VStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
@@ -102,6 +103,7 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
     formData.append("isTax", String(data.isTax));
     formData.append("isEnable", String(data.isEnable));
     formData.append("sectionId", String(sectionId));
+    formData.append("details", String(data.details));
 
     if (data.image && data.image[0]) {
       formData.append("image", data.image[0]);
@@ -355,6 +357,25 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
                 </FormControl>
               </Box>
             )}
+          </Flex>
+          <Flex sx={styles.itemContainer}>
+            <Box sx={styles.item}>
+              <FormControl isInvalid={!!errors.details}>
+                <FormLabel sx={styles.labels} htmlFor="details">
+                  جزئیات
+                </FormLabel>
+                <Textarea
+                  id="details"
+                  placeholder="جزئیات غذا را وارد کنید"
+                  sx={styles.inputs}
+                  defaultValue={food?.details ?? ""}
+                  {...register("details")}
+                />
+                <FormErrorMessage>
+                  {errors.details && errors.details.message}
+                </FormErrorMessage>
+              </FormControl>
+            </Box>
           </Flex>
           <FormControl isInvalid={!!errors.image}>
             <FormLabel sx={styles.labels} htmlFor="image">

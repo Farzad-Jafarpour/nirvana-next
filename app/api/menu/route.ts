@@ -89,6 +89,7 @@ export async function POST(request: NextRequest) {
   const data = await request.formData();
 
   const title = data.get("title") as string;
+  const details = data.get("details") as string;
   const price = parseFloat(data.get("price") as string);
   const hasExtra = data.get("hasExtra") === "true";
   const isAvailable = data.get("isAvailable") === "true";

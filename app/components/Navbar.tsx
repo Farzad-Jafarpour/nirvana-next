@@ -164,7 +164,7 @@ const Navbar = () => {
               {user && user.isAdmin ? (
                 <>
                   <Link href={"/admin/food"}>
-                    <MenuItem sx={styles.menuItem}>افزودن غذا</MenuItem>
+                    <MenuItem sx={styles.menuItem}>افزودن آیتم</MenuItem>
                   </Link>
                   <Link href={"/admin/extra"}>
                     <MenuItem sx={styles.menuItem}>افزودن آیتم اضافی</MenuItem>

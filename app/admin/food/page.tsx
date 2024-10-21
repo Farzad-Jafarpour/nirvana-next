@@ -12,7 +12,7 @@ const FoodList = () => {
     <Box w="95%" h="100vh" p={5}>
       <Flex gap={3}>
         <Button bg="teal.400">
-          <Link href="food/new">غذای جدید</Link>
+          <Link href="food/new">آیتم جدید</Link>
         </Button>
         <Button bg="teal.400">
           <Link href="/admin/categories">دسته بندی</Link>

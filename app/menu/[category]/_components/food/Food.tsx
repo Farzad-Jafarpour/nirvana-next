@@ -137,6 +137,7 @@ const Food: React.FC<FoodProps> = ({
       height: "40px",
       width: "98%",
       borderRadius: "5px",
+      padding: "15px",
     },
     btnContainer: {
       display: "flex",
@@ -170,7 +171,7 @@ const Food: React.FC<FoodProps> = ({
       opacity: 0.8,
     },
     titleText: {
-      fontSize: "xl",
+      fontSize: "md",
       color: " #000000 ",
       cursor: "pointer", // Makes the title look clickable
     },
@@ -270,9 +271,11 @@ const Food: React.FC<FoodProps> = ({
           <Spacer />
           <Box width={"100%"}>
             <Box sx={styles.textContainer}>
-              <Button onClick={handleClick} sx={styles.btnSecondary}>
-                برای انتخاب محتویات خود کلیک کنید
-              </Button>
+              {hasExtra && (
+                <Button onClick={handleClick} sx={styles.btnSecondary}>
+                  برای انتخاب محتویات خود کلیک کنید
+                </Button>
+              )}
 
               <Box sx={styles.details}>
                 <Box sx={styles.priceText}>
@@ -349,9 +352,11 @@ const Food: React.FC<FoodProps> = ({
             <Text as="h3" sx={styles.titleText} onClick={handleTitleClick}>
               {showFullTitle ? title : truncateTitle(title, 40)}
             </Text>
-            <Button onClick={handleClick} sx={styles.btnSecondary}>
-              برای انتخاب محتویات خود کلیک کنید
-            </Button>
+            {hasExtra && (
+              <Button onClick={handleClick} sx={styles.btnSecondary}>
+                برای انتخاب محتویات خود کلیک کنید
+              </Button>
+            )}
             <Box sx={styles.details}>
               <Box sx={styles.priceText}>
                 <Text fontSize="sm">{price} هزار تومان </Text>
