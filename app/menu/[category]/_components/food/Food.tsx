@@ -18,6 +18,7 @@ import ExtraItems from "./_components/ExtraItems";
 import Details from "./_components/Details";
 import DetailsModal from "./_components/DetailsModal";
 import useFoodStore from "@/app/stores/foodStore";
+import ImageModal from "./_components/ImageModal";
 // import useFoodStore from "components/menu/store";
 
 const breakpoints = {
@@ -55,6 +56,7 @@ const Food: React.FC<FoodProps> = ({
     null
   );
   const [selectedFoodId, setSelectedFoodId] = useState<number | null>(null);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
   const styles = {
     container: {
@@ -221,6 +223,10 @@ const Food: React.FC<FoodProps> = ({
     removeFood(id);
   };
 
+  const handleImageClick = () => {
+    setIsImageModalOpen(true); // Open the image modal
+  };
+
   const handleSwipeLeft = () => {
     setSwipeDirection("left");
     handleAddFood(isTax);
@@ -259,7 +265,7 @@ const Food: React.FC<FoodProps> = ({
             </Box>
           )}
           <Flex sx={styles.largeHeader}>
-            <Box sx={styles.imageContainer}>
+            <Box sx={styles.imageContainer} onClick={handleImageClick}>
               <Image src={src} sx={styles.image} alt="food-image" />
             </Box>
             <Box flex="1">
@@ -345,7 +351,7 @@ const Food: React.FC<FoodProps> = ({
               <Text>غذا تمام شده است</Text>
             </Box>
           )}
-          <Box sx={styles.imageContainer}>
+          <Box sx={styles.imageContainer}  onClick={handleImageClick}>
             <Image src={src} sx={styles.image} alt="food-image" />
           </Box>
           <Box sx={styles.textContainer}>
@@ -416,6 +422,14 @@ const Food: React.FC<FoodProps> = ({
           </Box>
         </Box>
       )}
+
+      <ImageModal
+        isOpen={isImageModalOpen}
+        onClose={() => setIsImageModalOpen(false)} // Close the modal
+        title={title}
+        details={details || ""}
+        src={src}
+      />
       <CustomModal
         category={categoryTitle}
         foodId={selectedFoodId!}
