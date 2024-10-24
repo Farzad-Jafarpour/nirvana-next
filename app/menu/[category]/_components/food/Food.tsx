@@ -71,6 +71,7 @@ const Food: React.FC<FoodProps> = ({
       borderRadius: "5px",
       padding: "5px",
       transition: "transform 0.3s ease-in-out",
+      marginX: "10px",
       transform:
         swipeDirection === "left"
           ? "translateX(-10px)"
@@ -81,7 +82,7 @@ const Food: React.FC<FoodProps> = ({
     imageContainer: {
       width: isLarge ? "160px" : sizeBreakpoints,
       height: isLarge ? "160px" : sizeBreakpoints,
-      marginLeft: "15px",
+      marginLeft: "5px",
     },
     largeHeader: {
       alignItems: "center",
