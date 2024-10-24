@@ -5,9 +5,32 @@ import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { Box, Button, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import Slider from "../Slider";
+import { useParams } from "next/navigation";
 
 const Categories: React.FC = () => {
   const [show, setShow] = useState(false);
+  const params = useParams(); // Get dynamic params
+  const category = params?.category;
+
+  let pageCategory = "نیروانا";
+  switch (category) {
+    case "breakfast":
+      pageCategory = "صبحانه";
+      break;
+    case "food":
+      pageCategory = "غذا";
+      break;
+    case "cold":
+      pageCategory = "بار سرد";
+      break;
+    case "hot":
+      pageCategory = "بار گرم";
+      break;
+    default:
+      pageCategory = "نیروانا";
+  }
+
+  console.log("cat", category);
 
   const breakpoints = {
     base: "100vw",
@@ -35,7 +58,7 @@ const Categories: React.FC = () => {
       borderRadius: "5px",
       padding: "5px",
       margin: "5px",
-      fontSize: "xl",
+      fontSize: "md",
     },
     sliderContainer: {
       color: "#000",
@@ -54,7 +77,7 @@ const Categories: React.FC = () => {
             setShow(!show);
           }}
         >
-          <Text as="h2">همه دسته‌بندیها در یک نگاه</Text>
+          <Text  as="h2">دسته‌بندیهای {pageCategory} در یک نگاه</Text>
           {show ? (
             <ChevronUpIcon color="#000" />
           ) : (

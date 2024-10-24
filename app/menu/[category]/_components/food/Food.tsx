@@ -79,8 +79,8 @@ const Food: React.FC<FoodProps> = ({
           : "translateX(0)",
     },
     imageContainer: {
-      width: isLarge ? "180px" : sizeBreakpoints,
-      height: isLarge ? "180px" : sizeBreakpoints,
+      width: isLarge ? "160px" : sizeBreakpoints,
+      height: isLarge ? "160px" : sizeBreakpoints,
       marginLeft: "15px",
     },
     largeHeader: {
@@ -425,16 +425,16 @@ const Food: React.FC<FoodProps> = ({
 
       <ImageModal
         isOpen={isImageModalOpen}
-        onClose={() => setIsImageModalOpen(false)} // Close the modal
+        onClose={() => setIsImageModalOpen(false)}
         title={title}
         details={details || ""}
         src={src}
-        existingFoodIndex={existingFoodIndex} // Pass the index of the existing food item
-        handleAddFood={handleAddFood} // Pass the function to add food
-        handleRemove={handleRemove} // Pass the function to remove food
-        id={id} // Pass the food id
-        isTax={isTax} // Pass the isTax flag
-        foods={foods} // Pass the foods array
+        existingFoodIndex={existingFoodIndex}
+        handleAddFood={handleAddFood}
+        handleRemove={handleRemove}
+        id={id}
+        isTax={isTax}
+        foods={foods}
       />
       <CustomModal
         category={categoryTitle}
