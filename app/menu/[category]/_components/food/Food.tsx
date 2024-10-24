@@ -351,7 +351,7 @@ const Food: React.FC<FoodProps> = ({
               <Text>غذا تمام شده است</Text>
             </Box>
           )}
-          <Box sx={styles.imageContainer}  onClick={handleImageClick}>
+          <Box sx={styles.imageContainer} onClick={handleImageClick}>
             <Image src={src} sx={styles.image} alt="food-image" />
           </Box>
           <Box sx={styles.textContainer}>
@@ -429,6 +429,12 @@ const Food: React.FC<FoodProps> = ({
         title={title}
         details={details || ""}
         src={src}
+        existingFoodIndex={existingFoodIndex} // Pass the index of the existing food item
+        handleAddFood={handleAddFood} // Pass the function to add food
+        handleRemove={handleRemove} // Pass the function to remove food
+        id={id} // Pass the food id
+        isTax={isTax} // Pass the isTax flag
+        foods={foods} // Pass the foods array
       />
       <CustomModal
         category={categoryTitle}
