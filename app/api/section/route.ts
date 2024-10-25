@@ -129,6 +129,9 @@ export async function GET(req: NextRequest) {
 
   try {
     const sections = await prisma.section.findMany({
+      orderBy: {
+        order: "asc", // Change to 'desc' if you want descending order
+      },
       include: {
         menuItems: {
           where: {
