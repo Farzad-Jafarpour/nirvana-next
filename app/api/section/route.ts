@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     return addCorsHeaders(new NextResponse(null, { status: 204 }), origin);
   }
 
-  // CORS check
+  // CORS checka
   if (origin && !allowedOrigins.includes(origin)) {
     return addCorsHeaders(
       new NextResponse("CORS policy violation", { status: 403 }),
@@ -55,11 +55,13 @@ export async function POST(request: NextRequest) {
     // Parse form data
     const formData = await request.formData();
 
-    // Validate the form data
+    // Extract fields from form data
     const title = formData.get("title") as string;
     const category = formData.get("category") as string;
+    const order = parseInt(formData.get("order") as string) || 1; // Default order to 1 if not provided
     const imageFile = formData.get("image") as File | null;
 
+    // Validate required fields
     if (!title || !category) {
       return addCorsHeaders(
         new NextResponse(
@@ -70,30 +72,31 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    let icon = "";
+    let icon = "http://nirvanacafe.ir/uploads/logo.webp"; // Default icon URL
 
+    // If an image file is provided, upload it to S3
     if (imageFile) {
       const buffer = Buffer.from(await imageFile.arrayBuffer());
       const fileName = `${Date.now()}-${imageFile.name}`;
 
-      const params = {
+      const uploadParams = {
         Bucket: bucketName,
         Key: fileName,
         Body: buffer,
         ContentType: imageFile.type,
       };
 
-      await s3.send(new PutObjectCommand(params));
+      await s3.send(new PutObjectCommand(uploadParams));
       icon = `${process.env.LIARA_ENDPOINT}/${bucketName}/${fileName}`;
-    } else {
-      icon = "http://nirvanacafe.ir/uploads/logo.webp";
     }
 
+    // Create the new Section in the database
     const newSection = await prisma.section.create({
       data: {
         title,
         category,
-        icon, // Save the S3 URL in the database
+        order,
+        icon, // Save the S3 URL or fallback icon in the database
       },
     });
 
@@ -102,7 +105,7 @@ export async function POST(request: NextRequest) {
     });
     return addCorsHeaders(response, origin);
   } catch (error) {
-    console.error(error);
+    console.error("Error creating Section:", error);
     const response = new NextResponse("Internal server error", { status: 500 });
     return addCorsHeaders(response, origin);
   }
