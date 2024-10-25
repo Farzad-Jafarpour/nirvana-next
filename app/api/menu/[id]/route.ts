@@ -38,92 +38,126 @@ export async function PATCH(
     });
   }
 
-  const formData = await request.formData();
+  try {
+    const formData = await request.formData();
 
-  const title = formData.get("title") as string;
-  const price = parseFloat(formData.get("price") as string);
-  const hasExtra = formData.get("hasExtra") === "true";
-  const isAvailable = formData.get("isAvailable") === "true";
-  const isNew = formData.get("isNew") === "true";
-  const isLarge = formData.get("isLarge") === "true";
-  const isTax = formData.get("isTax") === "true";
-  const isEnable = formData.get("isEnable") === "true";
-  const details = formData.get("details") as string | null;
-
-  const imageFile = formData.get("image") as File | null;
-
-  // Initialize S3 client
-  const s3 = new S3Client({
-    endpoint: endpoint as string,
-    region: "us-west-1", // Adjust according to your region
-    credentials: {
-      accessKeyId: accessKeyId as string,
-      secretAccessKey: secretAccessKey as string,
-    },
-  });
-
-  const menuItemObj = await prisma.menuItem.findUnique({
-    where: { id: parseInt(params.id) },
-  });
-
-  if (!menuItemObj) {
-    return NextResponse.json({ error: "Menu item not found" }, { status: 404 });
-  }
-
-  let newSrc = menuItemObj.src; // Default to the existing src
-
-  if (imageFile) {
-    const buffer = Buffer.from(await imageFile.arrayBuffer());
-    const fileName = `${Date.now()}-${imageFile.name}`; // Generate a unique filename
-
-    // Upload new image to S3
-    const uploadParams = {
-      Bucket: bucketName as string,
-      Key: fileName,
-      Body: buffer,
-      ContentType: imageFile.type,
-    };
-
-    await s3.send(new PutObjectCommand(uploadParams));
-    newSrc = `${endpoint}/${bucketName}/${fileName}`; // Update src to point to the new image
-
-    // Delete the old image from S3 if it's not the default fallback
-    if (
-      menuItemObj.src &&
-      menuItemObj.src !== "http://nirvanacafe.ir/uploads/logo.webp"
-    ) {
-      const oldFileName = menuItemObj.src.split("/").pop(); // Extract the file name from the URL
-
-      if (oldFileName) {
-        const deleteParams = {
-          Bucket: bucketName as string,
-          Key: oldFileName,
-        };
-
-        await s3.send(new DeleteObjectCommand(deleteParams));
-      }
-    }
-  }
-
-  const updatedMenuItem = await prisma.menuItem.update({
-    where: { id: menuItemObj.id },
-    data: {
+    // Extract form data and parse values
+    const {
       title,
-      src: newSrc,
       price,
-      details,
       hasExtra,
       isAvailable,
       isNew,
       isLarge,
-      isEnable,
       isTax,
-    },
-  });
+      isEnable,
+      details,
+      extraItemIds,
+    } = {
+      title: formData.get("title") as string,
+      price: parseFloat(formData.get("price") as string),
+      hasExtra: formData.get("hasExtra") === "true",
+      isAvailable: formData.get("isAvailable") === "true",
+      isNew: formData.get("isNew") === "true",
+      isLarge: formData.get("isLarge") === "true",
+      isTax: formData.get("isTax") === "true",
+      isEnable: formData.get("isEnable") === "true",
+      details: formData.get("details") as string | null,
+      extraItemIds: JSON.parse(
+        (formData.get("extraItemIds") as string) || "[]"
+      ) as number[],
+    };
 
-  const response = NextResponse.json(updatedMenuItem);
+    const imageFile = formData.get("image") as File | null;
 
-  // Add CORS headers
+    // Find the existing menu item
+    const menuItemObj = await prisma.menuItem.findUnique({
+      where: { id: parseInt(params.id) },
+    });
+
+    if (!menuItemObj) {
+      return NextResponse.json(
+        { error: "Menu item not found" },
+        { status: 404 }
+      );
+    }
+
+    let newSrc = menuItemObj.src; // Default to the existing src
+
+    if (imageFile) {
+      // Handle image upload and deletion
+      const buffer = Buffer.from(await imageFile.arrayBuffer());
+      const fileName = `${Date.now()}-${imageFile.name}`;
+
+      const s3 = new S3Client({
+        endpoint: endpoint as string,
+        region: "us-west-1",
+        credentials: {
+          accessKeyId: accessKeyId as string,
+          secretAccessKey: secretAccessKey as string,
+        },
+      });
+
+      const uploadParams = {
+        Bucket: bucketName as string,
+        Key: fileName,
+        Body: buffer,
+        ContentType: imageFile.type,
+      };
+
+      await s3.send(new PutObjectCommand(uploadParams));
+      newSrc = `${endpoint}/${bucketName}/${fileName}`;
+
+      // Delete the old image if it's not the default one
+      if (
+        menuItemObj.src &&
+        menuItemObj.src !== "http://nirvanacafe.ir/uploads/logo.webp"
+      ) {
+        const oldFileName = menuItemObj.src.split("/").pop();
+        if (oldFileName) {
+          const deleteParams = {
+            Bucket: bucketName as string,
+            Key: oldFileName,
+          };
+          await s3.send(new DeleteObjectCommand(deleteParams));
+        }
+      }
+    }
+
+    // Update the menu item, including extra item associations
+    const updatedMenuItem = await prisma.menuItem.update({
+      where: { id: menuItemObj.id },
+      data: {
+        title,
+        price,
+        details,
+        hasExtra,
+        isAvailable,
+        isNew,
+        isLarge,
+        isEnable,
+        isTax,
+        src: newSrc,
+        extraItems: {
+          set: extraItemIds.map((id) => ({ id })), // Replace existing associations
+        },
+      },
+    });
+
+    const response = NextResponse.json(updatedMenuItem);
+
+    // Set CORS headers
+    setCorsHeaders(response, origin);
+
+    return response;
+  } catch (error) {
+    console.error("Error updating MenuItem:", error);
+    return new NextResponse("Internal Server Error", { status: 500 });
+  }
+}
+
+// Helper function to set CORS headers
+function setCorsHeaders(response: NextResponse, origin: string | null) {
   response.headers.set("Access-Control-Allow-Origin", origin || "*");
   response.headers.set(
     "Access-Control-Allow-Methods",
@@ -133,8 +167,6 @@ export async function PATCH(
     "Access-Control-Allow-Headers",
     "Content-Type, Authorization"
   );
-
-  return response;
 }
 
 export async function OPTIONS() {
