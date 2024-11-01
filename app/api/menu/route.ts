@@ -144,6 +144,7 @@ export async function POST(request: NextRequest) {
       isEnable,
       sectionId,
       extraItemIds,
+      order
     } = {
       title: data.get("title") as string,
       details: data.get("details") as string,
@@ -158,6 +159,7 @@ export async function POST(request: NextRequest) {
       extraItemIds: JSON.parse(
         (data.get("extraItemIds") as string) || "[]"
       ) as number[],
+      order: parseInt(data.get("order") as string) || 1
     };
 
     // Upload image to S3 and get the URL
@@ -180,6 +182,7 @@ export async function POST(request: NextRequest) {
         extraItems: {
           connect: extraItemIds.map((id) => ({ id })),
         },
+        order
       },
     });
 

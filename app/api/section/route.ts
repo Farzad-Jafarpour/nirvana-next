@@ -134,6 +134,9 @@ export async function GET(req: NextRequest) {
       },
       include: {
         menuItems: {
+          orderBy: {
+            order: "asc", // Change to 'desc' if you want descending order
+          },
           where: {
             isEnable: true,
           },

@@ -37,6 +37,7 @@ model MenuItem {
   sectionId   Int
   OrderItem   OrderItem[]
   extraItems  ExtraItem[] @relation("MenuItemExtras")
+  order       Int         @default(1)
 
   @@index([sectionId])
 }

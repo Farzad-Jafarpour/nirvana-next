@@ -53,6 +53,7 @@ export async function PATCH(
       isEnable,
       details,
       extraItemIds,
+      order
     } = {
       title: formData.get("title") as string,
       price: parseFloat(formData.get("price") as string),
@@ -66,6 +67,7 @@ export async function PATCH(
       extraItemIds: JSON.parse(
         (formData.get("extraItemIds") as string) || "[]"
       ) as number[],
+      order: parseInt(formData.get("order") as string) || 1
     };
 
     const imageFile = formData.get("image") as File | null;
@@ -141,6 +143,7 @@ export async function PATCH(
         extraItems: {
           set: extraItemIds.map((id) => ({ id })), // Replace existing associations
         },
+        order
       },
     });
 
