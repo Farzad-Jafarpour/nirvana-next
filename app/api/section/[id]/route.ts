@@ -45,6 +45,7 @@ export async function PATCH(
     const title = formData.get("title") as string;
     const category = formData.get("category") as string;
     const imageFile = formData.get("image") as File | null;
+    const order = parseInt(formData.get("order") as string) || undefined; // Use undefined if not provided
 
     // Find the section by its ID
     const section = await prisma.section.findUnique({
@@ -105,9 +106,10 @@ export async function PATCH(
     const updatedSection = await prisma.section.update({
       where: { id: section.id },
       data: {
-        title,
-        category,
-        icon: newIcon, // Set the updated icon
+        title: title || section.title, // Use existing if not provided
+        category: category || section.category, // Use existing if not provided
+        order: order !== undefined ? order : section.order, // Use existing if not provided
+        icon: newIcon,
       },
     });
 
