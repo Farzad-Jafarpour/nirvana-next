@@ -1,24 +1,36 @@
 "use client";
 
+import Loading from "@/app/components/Loading";
 import { BaseUrl, colorPalette } from "@/assets/constants";
-import { useMenuItems } from "@/hooks/useSections";
+import { useExtraMenuItems, useMenuItems } from "@/hooks/useSections";
 import { axiosInstance } from "@/services/apiClient";
+import { ExtraType } from "@/types/extra";
 import { MenuItemType } from "@/types/menu";
 import {
   Box,
   Button,
+  Checkbox,
   Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Radio,
   Select,
   Spacer,
   Textarea,
   VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 type FoodFormType = MenuItemType & {
@@ -32,13 +44,21 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
   const { data: foodData } = useMenuItems();
 
   const [sectionId, setSectionId] = useState(0);
-
   const {
     handleSubmit,
     register,
     watch,
     formState: { errors, isSubmitting },
   } = useForm<FoodFormType>({});
+
+  const { data, error, isLoading } = useExtraMenuItems();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedExtraItems, setSelectedExtraItems] = useState<number[]>([]);
+  const [selectAll, setSelectAll] = useState(false);
+
+  if (isLoading) return <Loading />;
+  if (error) return <div>Error: {error.message}</div>;
+  const ExtraItems: ExtraType[] = data;
 
   const styles = {
     container: {
@@ -89,6 +109,29 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
       padding: "5px",
       direction: "row",
     },
+    checkBox: {
+      borderColor: "black", // Set the border color of the individual checkboxes
+      _hover: {
+        borderColor: "black", // Ensure the border color remains black on hover
+      },
+    },
+  };
+
+  const handleExtraItemChange = (itemId: number, checked: boolean) => {
+    if (checked) {
+      setSelectedExtraItems((prev) => [...prev, itemId]);
+    } else {
+      setSelectedExtraItems((prev) => prev.filter((id) => id !== itemId));
+    }
+  };
+
+  const handleSelectAllChange = (checked: boolean) => {
+    setSelectAll(checked);
+    if (checked) {
+      setSelectedExtraItems(ExtraItems.map((item) => item.id));
+    } else {
+      setSelectedExtraItems([]);
+    }
   };
 
   const onSubmit = handleSubmit(async (data: FoodFormType) => {
@@ -108,6 +151,10 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
     if (data.image && data.image[0]) {
       formData.append("image", data.image[0]);
     }
+
+    // Add selectedExtraItems to formData
+    formData.append("extraItemIds", JSON.stringify(selectedExtraItems));
+    console.log("selected", selectedExtraItems);
 
     try {
       if (food) {
@@ -307,6 +354,23 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
           </Flex>
           <Flex sx={styles.itemContainer}>
             <Box sx={styles.item}>
+              <FormControl>
+                <FormLabel sx={styles.labels} htmlFor="extraItems">
+                  محتویات اضافه
+                </FormLabel>
+                {/* Button to open the modal for selecting Extra Items */}
+                <Button
+                  onClick={onOpen}
+                  width="100%"
+                  textAlign="left"
+                  padding="8px 12px"
+                  sx={styles.inputs}
+                >
+                  محتویات اضافه را انتخاب کنید
+                </Button>
+              </FormControl>
+            </Box>
+            <Box sx={styles.item}>
               <FormControl isInvalid={!!errors.isLarge}>
                 <FormLabel sx={styles.labels} htmlFor="isLarge">
                   وضعیت بزرگ بودن آیتم
@@ -392,6 +456,51 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
               {errors.image && errors.image.message}
             </FormErrorMessage>
           </FormControl>
+
+          {/* Modal for Extra Items Selection */}
+          <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Select Extra Items</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <FormControl dir="rtl">
+                  <Checkbox
+                    isChecked={selectAll}
+                    onChange={(e) => handleSelectAllChange(e.target.checked)}
+                    sx={styles.checkBox}
+                  >
+                    انتخاب همه
+                  </Checkbox>
+                  {ExtraItems.map((item) => (
+                    <Checkbox
+                      key={item.id}
+                      isChecked={selectedExtraItems.includes(item.id)}
+                      onChange={(e) =>
+                        handleExtraItemChange(item.id, e.target.checked)
+                      }
+                      ml={4}
+                      sx={styles.checkBox}
+                    >
+                      {item.title}
+                    </Checkbox>
+                  ))}
+                </FormControl>
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  width="60px"
+                  bg={colorPalette.third}
+                  isLoading={isSubmitting}
+                  onClick={onClose}
+                >
+                  انتخاب
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+
+          {/* Submit and Cancel Buttons */}
           <Box sx={styles.btnContainer}>
             <Button
               width="60px"

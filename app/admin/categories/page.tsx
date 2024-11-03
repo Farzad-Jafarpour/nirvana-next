@@ -20,6 +20,7 @@ type Inputs = {
   category: string;
   image: FileList;
   title: string;
+  order: number;
 };
 
 export default function CategoryForm() {
@@ -85,6 +86,7 @@ export default function CategoryForm() {
     const formData = new FormData();
     formData.append("category", data.category);
     formData.append("title", data.title);
+    formData.append("order", data.order.toString());
 
     if (data.image && data.image[0]) {
       formData.append("image", data.image[0]);
@@ -148,22 +150,42 @@ export default function CategoryForm() {
               </FormControl>
             </Box>
           </Flex>
-
-          <FormControl isInvalid={!!errors.image}>
-            <FormLabel sx={styles.labels} htmlFor="image">
-              تصویر
-            </FormLabel>
-            <Input
-              id="image"
-              sx={{ padding: "5px" }}
-              type="file"
-              variant="pill"
-              {...register("image")}
-            />
-            <FormErrorMessage>
-              {errors.image && errors.image.message}
-            </FormErrorMessage>
-          </FormControl>
+          <Flex sx={styles.itemContainer}>
+            <Box sx={styles.item}>
+              <FormControl isInvalid={!!errors.order}>
+                <FormLabel sx={styles.labels} htmlFor="order">
+                  اولویت نمایش
+                </FormLabel>
+                <Input
+                  id="order"
+                  placeholder="اولویت نمایش"
+                  sx={styles.inputs}
+                  {...register("order", { required: "اولویت را وارد کنید" })}
+                />
+                <FormErrorMessage>
+                  {errors.order && errors.order.message}
+                </FormErrorMessage>
+              </FormControl>
+            </Box>
+            <Spacer />
+            <Box sx={styles.item}>
+              <FormControl isInvalid={!!errors.image}>
+                <FormLabel sx={styles.labels} htmlFor="image">
+                  تصویر
+                </FormLabel>
+                <Input
+                  id="image"
+                  sx={{ padding: "5px" }}
+                  type="file"
+                  variant="pill"
+                  {...register("image")}
+                />
+                <FormErrorMessage>
+                  {errors.image && errors.image.message}
+                </FormErrorMessage>
+              </FormControl>
+            </Box>
+          </Flex>
           <Box sx={styles.btnContainer}>
             <Button
               width="60px"

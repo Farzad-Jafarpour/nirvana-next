@@ -68,7 +68,6 @@ model Order {
   isReady    Boolean
   isPaid     Boolean
   isTax      Boolean  @default(false)
-
   orderItems OrderItem[]
 }
 
@@ -78,7 +77,6 @@ model OrderItem {
   menuItemId Int
   quantity   Int
   price      Int
-
   order          Order            @relation(fields: [orderId], references: [id])
   menuItem       MenuItem         @relation(fields: [menuItemId], references: [id])
   orderExtraItem OrderExtraItem[]
@@ -90,7 +88,6 @@ model OrderExtraItem {
   extraItemId Int
   quantity    Int
   price       Int
-
   orderItem OrderItem @relation(fields: [orderItemId], references: [id])
   extraItem ExtraItem @relation(fields: [extraItemId], references: [id])
 }
