@@ -58,6 +58,7 @@ model ExtraItem {
   category       String
   OrderExtraItem OrderExtraItem[]
   menuItems      MenuItem[]       @relation("MenuItemExtras")
+  isEnable       Boolean          @default(true)
 }
 
 model Order {

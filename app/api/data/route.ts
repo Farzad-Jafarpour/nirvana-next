@@ -8,7 +8,11 @@ export async function GET(req: NextRequest) {
     // Fetch all sections with their associated menuItems
     const sections = await prisma.section.findMany({
       include: {
-        menuItems: true,
+        menuItems: {
+          include: {
+            extraItems: true, // This includes related ExtraItems for each MenuItem
+          },
+        },
       },
     });
 

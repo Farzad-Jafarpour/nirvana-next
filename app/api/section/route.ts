@@ -140,6 +140,13 @@ export async function GET(req: NextRequest) {
           where: {
             isEnable: true,
           },
+          include: {
+            extraItems: {
+              where: {
+                isEnable: true, // Only include ExtraItems where isEnable is true
+              },
+            },
+          },
         },
       },
     });

@@ -131,6 +131,9 @@ export async function GET(req: NextRequest) {
       include: {
         menuItems: {
           where: isAdmin ? {} : { isEnable: true }, // Adjust based on admin check
+          include: {
+            extraItems: true, // This includes related ExtraItems for each MenuItem
+          },
         },
       },
     });
