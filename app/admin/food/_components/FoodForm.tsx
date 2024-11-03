@@ -154,7 +154,7 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
 
     // Add selectedExtraItems to formData
     formData.append("extraItemIds", JSON.stringify(selectedExtraItems));
-    console.log("selected", selectedExtraItems);
+
 
     try {
       if (food) {

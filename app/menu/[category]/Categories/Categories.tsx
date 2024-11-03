@@ -30,8 +30,6 @@ const Categories: React.FC = () => {
       pageCategory = "نیروانا";
   }
 
-  console.log("cat", category);
-
   const breakpoints = {
     base: "100vw",
     md: "750px",
@@ -77,7 +75,7 @@ const Categories: React.FC = () => {
             setShow(!show);
           }}
         >
-          <Text  as="h2">دسته‌بندیهای {pageCategory} در یک نگاه</Text>
+          <Text as="h2">دسته‌بندیهای {pageCategory} در یک نگاه</Text>
           {show ? (
             <ChevronUpIcon color="#000" />
           ) : (

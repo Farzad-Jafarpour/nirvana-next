@@ -6,7 +6,6 @@ import Section from "./_components/Section";
 
 const FoodList = () => {
   const { data } = useAdminMenu();
-  console.log("data", data);
 
   return (
     <Box w="95%" h="100vh" p={5}>
