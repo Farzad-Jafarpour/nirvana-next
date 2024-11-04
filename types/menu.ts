@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { ExtraItemsList } from "./types";
+import { ExtraItemType } from "./extra";
 
 export const schema = z.object({
   title: z.string().min(1).trim(),
@@ -27,4 +29,5 @@ export interface MenuItemType {
   isTax: boolean;
   isEnable: boolean;
   sectionId: number;
+  extraItems?: ExtraItemType[];
 }

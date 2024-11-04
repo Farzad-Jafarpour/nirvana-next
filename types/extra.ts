@@ -14,3 +14,11 @@ export interface ExtraType {
   category: string;
   foodId?: number;
 }
+
+export interface ExtraItemType {
+  id: number;
+  title: string;
+  price: number;
+  category: string;
+  isEnable: boolean;
+}

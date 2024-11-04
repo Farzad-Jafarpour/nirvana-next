@@ -12,6 +12,7 @@ const EditFood = async ({ params }: { params: { id: string } }) => {
   });
 
   if (!food) notFound();
+  console.log("ex", food);
 
   return <FoodForm food={food} />;
 };

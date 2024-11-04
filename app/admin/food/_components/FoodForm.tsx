@@ -42,7 +42,6 @@ const valueAsBoolean = (value: string) => value === "true";
 export default function FoodForm({ food }: { food?: FoodFormType }) {
   const router = useRouter();
   const { data: foodData } = useMenuItems();
-
   const [sectionId, setSectionId] = useState(0);
   const {
     handleSubmit,
@@ -50,14 +49,29 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
     watch,
     formState: { errors, isSubmitting },
   } = useForm<FoodFormType>({});
-
   const { data, error, isLoading } = useExtraMenuItems();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedExtraItems, setSelectedExtraItems] = useState<number[]>([]);
   const [selectAll, setSelectAll] = useState(false);
 
+  useEffect(() => {
+    // Set initial selected extra items if food.extraItems is provided
+    if (food && food.extraItems) {
+      const selectedIds = food.extraItems.map((item) => item.id);
+      setSelectedExtraItems(selectedIds);
+
+      // Set selectAll to true if all items in data are selected
+      if (data && selectedIds.length === data.length) {
+        setSelectAll(true);
+      } else {
+        setSelectAll(false);
+      }
+    }
+  }, [food, data]);
+
   if (isLoading) return <Loading />;
   if (error) return <div>Error: {error.message}</div>;
+
   const ExtraItems: ExtraType[] = data;
 
   const styles = {
@@ -68,19 +82,12 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
       boxShadow: "md",
       color: "black",
     },
-    labels: {
-      margin: "5px",
-    },
+    labels: { margin: "5px" },
     inputs: {
       bg: colorPalette.third,
-      "&::placeholder": {
-        opacity: 1,
-        color: "black",
-      },
+      "&::placeholder": { opacity: 1, color: "black" },
     },
-    fileInput: {
-      display: "none",
-    },
+    fileInput: { display: "none" },
     fileInputLabel: {
       display: "inline-block",
       padding: "8px 12px",
@@ -88,9 +95,7 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
       borderRadius: "4px",
       cursor: "pointer",
     },
-    selectOptions: {
-      background: "#38B2AC",
-    },
+    selectOptions: { background: "#38B2AC" },
     itemContainer: {
       display: "flex",
       flexDirection: { base: "column", sm: "row" },
@@ -98,10 +103,7 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
       alignItems: "center",
       width: "100%",
     },
-    item: {
-      width: "100%",
-      margin: "5px",
-    },
+    item: { width: "100%", margin: "5px" },
     btnContainer: {
       display: "flex",
       width: "150px",
@@ -110,10 +112,8 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
       direction: "row",
     },
     checkBox: {
-      borderColor: "black", // Set the border color of the individual checkboxes
-      _hover: {
-        borderColor: "black", // Ensure the border color remains black on hover
-      },
+      borderColor: "black",
+      _hover: { borderColor: "black" },
     },
   };
 
@@ -154,7 +154,6 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
 
     // Add selectedExtraItems to formData
     formData.append("extraItemIds", JSON.stringify(selectedExtraItems));
-
 
     try {
       if (food) {
@@ -457,7 +456,6 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
             </FormErrorMessage>
           </FormControl>
 
-          {/* Modal for Extra Items Selection */}
           <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
@@ -472,21 +470,26 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
                   >
                     انتخاب همه
                   </Checkbox>
-                  {ExtraItems.map((item) => (
-                    <Checkbox
-                      key={item.id}
-                      isChecked={selectedExtraItems.includes(item.id)}
-                      onChange={(e) =>
-                        handleExtraItemChange(item.id, e.target.checked)
-                      }
-                      ml={4}
-                      sx={styles.checkBox}
-                    >
-                      {item.title}
-                    </Checkbox>
-                  ))}
+
+                  {/* Use Flex with wrap to create a two-column layout */}
+                  <Flex wrap="wrap" gap={2} mt={4}>
+                    {ExtraItems.map((item) => (
+                      <Checkbox
+                        key={item.id}
+                        isChecked={selectedExtraItems.includes(item.id)}
+                        onChange={(e) =>
+                          handleExtraItemChange(item.id, e.target.checked)
+                        }
+                        sx={styles.checkBox}
+                        width="100%" // Each checkbox takes half the width, creating two per row
+                      >
+                        {item.title}
+                      </Checkbox>
+                    ))}
+                  </Flex>
                 </FormControl>
               </ModalBody>
+
               <ModalFooter>
                 <Button
                   width="60px"
