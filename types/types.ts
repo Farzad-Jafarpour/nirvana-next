@@ -1,3 +1,5 @@
+import { ExtraItemType } from "./extra";
+
 export interface Food {
   id: number;
   title: string;
@@ -21,6 +23,7 @@ export interface FoodProps {
   isLarge?: boolean;
   isAvailable: boolean;
   isTax: boolean;
+  extraItems?: ExtraItemType[];
 }
 
 export interface DataListProps {
@@ -88,6 +91,7 @@ export interface FoodListStore {
 export interface ExtraItemsProps {
   categoryTitle: string;
   foodId: number | null;
+  extraItems?: ExtraItemType[];
 }
 
 export interface ExtraItemsList {

@@ -29,5 +29,5 @@ export interface MenuItemType {
   isTax: boolean;
   isEnable: boolean;
   sectionId: number;
-  extraItems?: ExtraItemType[];
+  extraItems: ExtraItemType[];
 }

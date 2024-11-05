@@ -4,7 +4,7 @@ import { Center } from "@chakra-ui/react";
 import { ExtraItemsProps } from "@/types/types";
 import ExtraItemRenderer from "./ExtraItemRenderer";
 import { useExtraMenuItems } from "@/hooks/useSections";
-import { ExtraType } from "@/types/extra";
+import { ExtraItemType, ExtraType } from "@/types/extra";
 import Loading from "@/app/components/Loading";
 // import sectionData from "data/foodSections.json";
 
@@ -12,21 +12,22 @@ const styles = {
   container: {
     flexDirection: "column",
     width: "100%",
-
     borderRadius: "5px",
     padding: "5px",
   },
 };
 
-const ExtraItems: React.FC<ExtraItemsProps> = ({ categoryTitle, foodId }) => {
+const ExtraItems: React.FC<ExtraItemsProps> = ({
+  categoryTitle,
+  foodId,
+  extraItems,
+}) => {
   const { data, error, isLoading } = useExtraMenuItems();
 
   if (isLoading) return <Loading />;
   if (error) return <div>Error: {error.message}</div>;
 
-  const items: ExtraType[] = data!.filter(
-    (item) => item.category === categoryTitle
-  );
+  const items = extraItems!.filter((item) => item.isEnable === true);
 
   return (
     <Center sx={styles.container}>

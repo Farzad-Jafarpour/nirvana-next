@@ -93,6 +93,7 @@ const FoodSection: React.FC<FoodSectionProps> = ({
           isLarge={item?.isLarge}
           isAvailable={item?.isAvailable}
           isTax={item?.isTax}
+          extraItems={item?.extraItems}
         />
       ))}
     </Box>

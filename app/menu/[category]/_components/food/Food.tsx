@@ -49,6 +49,7 @@ const Food: React.FC<FoodProps> = ({
   isLarge,
   isAvailable,
   isTax,
+  extraItems,
 }) => {
   const [showFullTitle, setShowFullTitle] = useState(false);
   const [categoryTitle, setCategoryTitle] = useState("");
@@ -443,6 +444,7 @@ const Food: React.FC<FoodProps> = ({
         isOpen={isExtraItemsOpen}
         onClose={onExtraItemsClose}
         CustomComponent={ExtraItems}
+        extraItems = {extraItems!}
       />
       <DetailsModal
         category={categoryTitle}

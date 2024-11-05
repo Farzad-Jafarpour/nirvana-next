@@ -1,3 +1,4 @@
+import { ExtraItemType } from "@/types/extra";
 import {
   Modal,
   ModalBody,
@@ -14,6 +15,7 @@ interface ModalProps {
   CustomComponent: React.ComponentType<any>;
   category: string;
   foodId: number | null;
+  extraItems: ExtraItemType[];
 }
 
 const styles = {
@@ -41,6 +43,7 @@ const CustomModal: React.FC<ModalProps> = ({
   CustomComponent,
   category,
   foodId,
+  extraItems,
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg">
@@ -51,7 +54,11 @@ const CustomModal: React.FC<ModalProps> = ({
         </ModalHeader>
         <ModalCloseButton sx={styles.closeBtn} />
         <ModalBody>
-          <CustomComponent categoryTitle={category} foodId={foodId} />
+          <CustomComponent
+            categoryTitle={category}
+            foodId={foodId}
+            extraItems={extraItems}
+          />
         </ModalBody>
       </ModalContent>
     </Modal>
