@@ -147,6 +147,7 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
     formData.append("isEnable", String(data.isEnable));
     formData.append("sectionId", String(sectionId));
     formData.append("details", String(data.details));
+    formData.append("order", String(data.order));
 
     if (data.image && data.image[0]) {
       formData.append("image", data.image[0]);
@@ -352,6 +353,22 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
             </Box>
           </Flex>
           <Flex sx={styles.itemContainer}>
+            <Box sx={styles.item}>
+              <FormControl isInvalid={!!errors.order}>
+                <FormLabel sx={styles.labels} htmlFor="order">
+                  اولویت نمایش
+                </FormLabel>
+                <Input
+                  id="order"
+                  placeholder="اولویت نمایش"
+                  sx={styles.inputs}
+                  {...register("order", { required: "اولویت را وارد کنید" })}
+                />
+                <FormErrorMessage>
+                  {errors.order && errors.order.message}
+                </FormErrorMessage>
+              </FormControl>
+            </Box>
             <Box sx={styles.item}>
               <FormControl>
                 <FormLabel sx={styles.labels} htmlFor="extraItems">

@@ -30,4 +30,5 @@ export interface MenuItemType {
   isEnable: boolean;
   sectionId: number;
   extraItems: ExtraItemType[];
+  order: number;
 }
