@@ -1,22 +1,21 @@
 "use client";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 import { colorPalette } from "@/assets/constants";
 import { axiosInstance } from "@/services/apiClient";
-import { ExtraType } from "@/types/extra";
+import { ExtraItemType } from "@/types/extra";
 import {
-  VStack,
-  Flex,
   Box,
+  Button,
+  Flex,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Input,
-  Button,
   Select,
-  FormErrorMessage,
   Spacer,
+  VStack,
 } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
 
 const styles = {
   container: {
@@ -69,29 +68,38 @@ const styles = {
   },
 };
 
+const valueAsBoolean = (value: string) => value === "true";
+
 type Inputs = {
   category: string;
   price: number;
   title: string;
+  isEnable: string;
 };
 
-const ExtraForm = ({ extra }: { extra?: ExtraType }) => {
+const ExtraForm = ({ extra }: { extra?: ExtraItemType }) => {
   const router = useRouter();
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
   } = useForm<Inputs>();
-  const [title, setTitle] = useState("");
-  const [price, setPrice] = useState(0);
-  const [category, setCategory] = useState("");
 
   const onSubmit = handleSubmit(async (data: Inputs) => {
-    if (extra)
+    const payload = {
+      title: data.title,
+      price: data.price,
+      category: data.category,
+      isEnable: data.isEnable, // Ensure boolean type
+    };
+
+    if (extra) {
       await axiosInstance
-        .patch(`extra/${extra.id}`, data)
+        .patch(`extra/${extra.id}`, payload)
         .then((res) => res.data);
-    else await axiosInstance.post("extra", data).then((res) => res.data);
+    } else {
+      await axiosInstance.post("extra", payload).then((res) => res.data);
+    }
     router.push("/admin/extra");
   });
 
@@ -138,6 +146,34 @@ const ExtraForm = ({ extra }: { extra?: ExtraType }) => {
               </FormErrorMessage>
             </FormControl>
           </Box>
+        </Flex>
+        <Flex sx={styles.itemContainer}>
+          <Box sx={styles.item}>
+            <FormControl isInvalid={!!errors.isEnable}>
+              <FormLabel sx={styles.labels} htmlFor="isEnable">
+                وضعیت بزرگ بودن آیتم
+              </FormLabel>
+              <Select
+                id="isEnable"
+                placeholder="وضعیت موجود بودن آیتم را انتخاب کنید"
+                defaultValue={`${extra?.isEnable}`}
+                {...register("isEnable", {
+                  setValueAs: valueAsBoolean,
+                })}
+              >
+                <option style={styles.selectOptions} value="true">
+                  موجود است
+                </option>
+                <option style={styles.selectOptions} value="false">
+                  موجود نیست
+                </option>
+              </Select>
+
+              <FormErrorMessage>
+                {errors.isEnable && errors.isEnable.message}
+              </FormErrorMessage>
+            </FormControl>
+          </Box>
           <Spacer />
           <Box sx={styles.item}>
             <FormControl isInvalid={!!errors.category}>
@@ -163,7 +199,6 @@ const ExtraForm = ({ extra }: { extra?: ExtraType }) => {
             </FormControl>
           </Box>
         </Flex>
-
         <Box sx={styles.btnContainer}>
           <Button
             width="60px"

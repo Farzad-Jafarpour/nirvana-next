@@ -7,7 +7,7 @@ export async function PATCH(
 ) {
   const body = await request.json();
 
-  const { title, price, category } = body;
+  const { title, price, category, isEnable } = body;
 
   const extraItemObj = await prisma.extraItem.findUnique({
     where: { id: parseInt(params.id) },
@@ -22,6 +22,7 @@ export async function PATCH(
       title,
       price,
       category,
+      isEnable,
     },
   });
   return NextResponse.json(updatedExtraItem);
