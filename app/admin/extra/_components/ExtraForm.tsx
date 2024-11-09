@@ -151,7 +151,7 @@ const ExtraForm = ({ extra }: { extra?: ExtraItemType }) => {
           <Box sx={styles.item}>
             <FormControl isInvalid={!!errors.isEnable}>
               <FormLabel sx={styles.labels} htmlFor="isEnable">
-                وضعیت بزرگ بودن آیتم
+                وضعیت موجود بودن آیتم
               </FormLabel>
               <Select
                 id="isEnable"

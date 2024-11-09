@@ -361,6 +361,7 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
                 <Input
                   id="order"
                   placeholder="اولویت نمایش"
+                  defaultValue={food?.order}
                   sx={styles.inputs}
                   {...register("order", { required: "اولویت را وارد کنید" })}
                 />

@@ -29,6 +29,7 @@ type SectionType = {
   category: string;
   icon: string;
   title: string;
+  order: number;
 };
 
 const styles = {
@@ -169,6 +170,7 @@ const CategoryForm = ({ section }: { section: SectionType }) => {
                 <Input
                   id="order"
                   placeholder="اولویت نمایش"
+                  defaultValue={section?.order}
                   sx={styles.inputs}
                   {...register("order", { required: "اولویت را وارد کنید" })}
                 />
