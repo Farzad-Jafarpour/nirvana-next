@@ -27,31 +27,54 @@ const Navbar: React.FC = () => {
   const styles = {
     container: {
       p: "16px",
-      bg: colorPalette.primary,
+      bg: `linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05))`, // Subtle light gradient
       color: "#000",
       align: "center",
       justifyContent: "space-between",
+      borderRadius: "20px", // Rounded corners for a soft look
+      boxShadow: "0px 8px 30px rgba(0, 0, 0, 0.2)", // Stronger shadow for floating effect
+      backdropFilter: "blur(10px)", // Slight blur for frosted glass effect
     },
     heading: {
-      borderRadius: "5px",
-      padding: "5px",
-      width: "50%",
+      borderRadius: "10px",
+      padding: "8px",
+      fontSize: "2xl",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
       color: colorPalette.__hover,
+      fontWeight: "bold",
+      transition: "color 0.3s ease", // Smooth color transition on hover
+      _hover: { color: "#ffdd57" }, // Bright color on hover
     },
     menuItem: {
-      bg: colorPalette.primary,
-      fontSize: "3xl",
-      _hover: { background: colorPalette.nav },
+      fontSize: "lg",
+      fontWeight: "bold",
+      padding: "12px 30px",
+      borderRadius: "12px",
+      color: "#fff",
+      transition: "all 0.4s ease", // Smooth transition for effects
+      bgGradient: `linear(to-r, ${colorPalette.primary}, ${colorPalette.secondary})`,
+      boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)", // Initial shadow for depth
+      _hover: {
+        transform: "scale(1.1)", // Larger scale on hover for impact
+        bgGradient: `linear(to-r, ${colorPalette.secondary}, ${colorPalette.primary})`, // Gradient reversal for visual effect
+        color: "#ffdd57", // Bright color for text on hover
+        boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.4)", // Stronger shadow for a lifting effect
+        filter: "brightness(1.2)", // Slight brightness increase
+      },
+      _active: {
+        transform: "scale(0.95)", // Slight press-down effect on click
+        boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.2)", // Subtle shadow on active click
+      },
     },
     iconButton: {
       padding: "8px",
-      borderRadius: "5px",
-      bg: "transparent",
-      transition: "background 0.3s",
-      _hover: { background: colorPalette.nav },
+      borderRadius: "50%", // Circular button for icons
+      bg: "rgba(255, 255, 255, 0.15)", // Transparent light background
+      transition: "transform 0.3s ease, background 0.3s ease", // Scale on hover
+      backdropFilter: "blur(5px)", // Blurred background for icon buttons
+      _hover: { transform: "scale(1.1)", background: colorPalette.nav }, // Enlarged and color change on hover
       position: "relative",
     },
     icon: {
@@ -70,7 +93,7 @@ const Navbar: React.FC = () => {
       position: "absolute",
       top: "40%",
       left: "40%",
-      transform: "translate(-50%, -50%)", // Center the badge within the icon
+      transform: "translate(-50%, -50%)",
     },
   };
 
