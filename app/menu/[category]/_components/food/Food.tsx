@@ -444,7 +444,7 @@ const Food: React.FC<FoodProps> = ({
         isOpen={isExtraItemsOpen}
         onClose={onExtraItemsClose}
         CustomComponent={ExtraItems}
-        extraItems = {extraItems!}
+        extraItems={extraItems!}
       />
       <DetailsModal
         category={categoryTitle}

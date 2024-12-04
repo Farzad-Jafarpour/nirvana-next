@@ -203,7 +203,7 @@ const CategoryForm = ({ section }: { section: SectionType }) => {
               type="submit"
               isLoading={isSubmitting}
             >
-              ارسال
+              ذخیره
             </Button>
             <Spacer />
             <Button

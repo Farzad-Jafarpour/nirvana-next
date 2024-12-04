@@ -193,7 +193,7 @@ export default function CategoryForm() {
               type="submit"
               isLoading={isSubmitting}
             >
-              ارسال
+              ذخیره
             </Button>
             <Spacer />
             <Button

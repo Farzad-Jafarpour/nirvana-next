@@ -87,12 +87,7 @@ const CategoryItemRenderer: React.FC<CategoryItemRendererProps> = ({
         <StyledBox color={color} height={height} width={width}>
           {img && (
             <Box sx={styles.images}>
-              <Image
-                src={img}
-                alt="menu"
-                width="80"
-                height="80"
-              />
+              <Image src={img} alt="menu" width="80" height="80" />
             </Box>
           )}
           <Text padding={"5px"}>{title}</Text>

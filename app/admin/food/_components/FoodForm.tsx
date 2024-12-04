@@ -529,7 +529,7 @@ export default function FoodForm({ food }: { food?: FoodFormType }) {
               type="submit"
               isLoading={isSubmitting}
             >
-              ارسال
+              ذخیره
             </Button>
             <Spacer />
             <Button

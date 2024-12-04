@@ -206,7 +206,7 @@ const ExtraForm = ({ extra }: { extra?: ExtraItemType }) => {
             type="submit"
             isLoading={isSubmitting}
           >
-            ارسال
+            ذخیره
           </Button>
           <Spacer />
           <Button
