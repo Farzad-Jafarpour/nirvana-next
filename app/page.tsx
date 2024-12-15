@@ -1,90 +1,166 @@
 "use client";
-import { Flex } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { AnimatedLogo, ItemRenderer, ToastRenderer } from "./components/common";
+
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Text,
+  Flex,
+  Center,
+  Icon,
+  Link,
+  Spacer,
+  Heading,
+  Button,
+} from "@chakra-ui/react";
+import { PhoneIcon } from "@chakra-ui/icons";
 import Navbar from "./components/Navbar";
-import { BaseUrl } from "@/assets/constants";
-import React from "react";
+import Carousel from "./components/Carousel";
+import { CollapsibleRenderer, ToastRenderer } from "./components/common";
 
-const url = BaseUrl + "land.webp";
+const reserveData = [
+  { question: "رزرو مراسمات به چه صورت است؟", content: "محتوای رزرو مراسم" },
+  { question: "شرایط رزرو به چه صورت است؟", content: "محتوای شرایط رزرو" },
+];
 
-const styles = {
-  container: {
-    position: "relative",
-    grow: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "calc(100vh - 74px)",
-    bgImage: url,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-  },
-  itemContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  content: {
-    background: "#000000",
-    opacity: 0.5,
-    display: "flex",
-    margin: "2px",
-    borderRadius: "10px",
-    minWidth: "180px",
-    minHeight: "200px",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    color: "rgb(255, 255, 255)",
-    textDecoration: "none",
-  },
-};
+const faq = [
+  { question: "چه روز هایی صبحانه دارید؟", content: "محتوای صبحانه" },
+  { question: "ساعت کاری کافه به چه صورته؟", content: "محتوای ساعت کاری" },
+];
 
-export default function Home() {
+function Home() {
   const [showToast, setShowToast] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowToast(false);
-    }, 2000); // Show toast for 2 seconds
-
-    return () => clearTimeout(timer); // Cleanup the timer on component unmount
+    const timer = setTimeout(() => setShowToast(false), 2000);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
-    <>
-      <Navbar />
+    <Box>
+      {/* Hero Section */}
+      <Box
+        position="relative"
+        height="100vh"
+        bgImage="url('http://nirvanacafe.ir/uploads/land.webp')"
+        bgSize="cover"
+        bgPosition="center"
+      >
+        <Navbar />
+        <Box
+          position="absolute"
+          top="0"
+          left="0"
+          right="0"
+          bottom="0"
+          bgGradient="linear(to-b, rgba(0, 0, 0, 0.6), transparent)"
+        />
+        <Center
+          height="100%"
+          flexDirection="column"
+          color="white"
+          textAlign="center"
+          background="rgba(0, 0, 0, 0.6)"
+        >
+          <Heading fontSize={["3xl", "4xl", "5xl"]} fontWeight="bold" mb={4}>
+            اینجا کافه نیرواناس
+          </Heading>
+          <Text fontSize={["lg", "xl"]} mb={6} maxW="500px">
+            یک خاطره با طعم خاص، شما دلیل حال خوب نیروانا هستید، بهترین! انتخاب
+            بهترینهاست
+          </Text>
+        </Center>
+      </Box>
 
-      <Flex sx={styles.container}>
-        <Flex sx={styles.itemContainer}>
-          <ItemRenderer
-            item="رزرو و شرایط رزرو"
-            path="/reservation"
-            styling={styles.content}
-          />
-          <ItemRenderer item="منو" path="/menuitems" styling={styles.content} />
+      <Box py={10} bg="white" position="relative" zIndex="1">
+        {/* Header Container */}
+        <Box
+          textAlign="center"
+          py={4}
+          bg="white" /* Explicit white background */
+          borderRadius="md"
+          boxShadow="sm" /* Subtle shadow for clarity */
+        >
+          <Heading fontSize="3xl" fontWeight="bold" color="teal.600">
+            منو کافه ما
+          </Heading>
+        </Box>
+
+        {/* Carousel Component */}
+        <Carousel />
+      </Box>
+
+      {/* FAQ Section */}
+      <Box py={10} px={6} bg="white">
+        <Heading textAlign="center" mb={8} fontSize="3xl" color="teal.600">
+          سوالات پر تکرار
+        </Heading>
+        <Flex direction="column" gap={6}>
+          {faq.map((item, index) => (
+            <Box
+              key={index}
+              p={4}
+              borderWidth="1px"
+              borderRadius="lg"
+              boxShadow="md"
+              _hover={{ boxShadow: "xl", transform: "translateY(-5px)" }}
+              transition="all 0.3s"
+            >
+              <CollapsibleRenderer
+                question={item.question}
+                content={item.content}
+              />
+            </Box>
+          ))}
         </Flex>
+      </Box>
 
-        {/* Flex Container for Main and Aside */}
-        <Flex sx={styles.itemContainer}>
-          <ItemRenderer
-            item="سوالات پر تکرار"
-            path="/faq"
-            styling={styles.content}
-          />
-          <ItemRenderer
-            item="تماس با ما"
-            path="/contact"
-            styling={styles.content}
-          />
+      {/* Reservation Section */}
+      <Box py={10} px={6} bg="gray.50">
+        <Heading textAlign="center" mb={8} fontSize="3xl" color="teal.600">
+          شرایط رزرو
+        </Heading>
+        <Flex direction="column" gap={6}>
+          {reserveData.map((item, index) => (
+            <Box
+              key={index}
+              p={4}
+              borderWidth="1px"
+              borderRadius="lg"
+              bg="white"
+              boxShadow="md"
+              _hover={{ boxShadow: "xl", transform: "translateY(-5px)" }}
+              transition="all 0.3s"
+            >
+              <CollapsibleRenderer
+                question={item.question}
+                content={item.content}
+              />
+            </Box>
+          ))}
         </Flex>
+      </Box>
 
-        <AnimatedLogo />
+      {/* Footer */}
+      <Box bg="teal.600" color="white" py={4} mt={10}>
+        <Flex justify="center" gap={6} mb={2}>
+          <Link href="tel:09370052929" isExternal>
+            <Flex align="center">
+              <Icon as={PhoneIcon} mr={2} /> کافه: 09370052929
+            </Flex>
+          </Link>
+          <Link href="tel:09148162165" isExternal>
+            <Flex align="center">
+              <Icon as={PhoneIcon} mr={2} /> مدیریت: 09148162165
+            </Flex>
+          </Link>
+        </Flex>
+        <Center fontSize="sm">Powered By Codyno</Center>
+      </Box>
 
-        {showToast && <ToastRenderer content="به نیروانا خوش آمدید" />}
-      </Flex>
-    </>
+      {/* Toast */}
+      {showToast && <ToastRenderer content="به نیروانا خوش آمدید" />}
+    </Box>
   );
 }
+
+export default Home;
