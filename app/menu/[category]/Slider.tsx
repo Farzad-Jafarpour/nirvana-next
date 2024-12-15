@@ -41,7 +41,7 @@ const Slider = () => {
   }
   const items = foodItems;
 
-  const slides = items.length > 2 ? 3 : items.length || 3;
+  const slides = items.length > 2 ? 3 : items.length;
 
   return (
     <Swiper
