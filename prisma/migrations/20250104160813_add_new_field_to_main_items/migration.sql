@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `MainItem` ADD COLUMN `path` VARCHAR(191) NOT NULL DEFAULT '';

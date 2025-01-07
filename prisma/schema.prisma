@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  isAdmin   Boolean?
+  createdAt DateTime @default(now())
+}
+
+model MainItem {
+  id       Int       @id @default(autoincrement())
+  title    String
+  src      String
+  path     String    @default("")
+  isEnable Boolean   @default(true)
+  sections Section[] // One-to-many relationship: a MainItem can have multiple Sections
+}
+
+model Section {
+  id         Int        @id @default(autoincrement())
+  title      String
+  icon       String
+  category   String
+  order      Int        @default(1)
+  mainItem   MainItem?  @relation(fields: [mainItemId], references: [id]) // Optional temporarily
+  mainItemId Int? // Optional temporarily
+  menuItems  MenuItem[]
+}
+
+model MenuItem {
+  id          Int         @id @default(autoincrement())
+  title       String
+  price       Int
+  src         String
+  hasExtra    Boolean
+  details     String?
+  isAvailable Boolean
+  isNew       Boolean
+  isLarge     Boolean
+  isEnable    Boolean     @default(true)
+  isTax       Boolean     @default(false)
+  section     Section     @relation(fields: [sectionId], references: [id])
+  sectionId   Int
+  OrderItem   OrderItem[]
+  extraItems  ExtraItem[] @relation("MenuItemExtras")
+  order       Int         @default(1)
+
+  @@index([sectionId])
+}
+
+model ExtraItem {
+  id             Int              @id @default(autoincrement())
+  title          String
+  price          Int
+  category       String
+  OrderExtraItem OrderExtraItem[]
+  menuItems      MenuItem[]       @relation("MenuItemExtras")
+  isEnable       Boolean          @default(true)
+}
+
+model Order {
+  id         Int         @id @default(autoincrement())
+  table      Int
+  totalPrice Int
+  createAt   DateTime    @default(now())
+  isReady    Boolean
+  isPaid     Boolean
+  isTax      Boolean     @default(false)
+  orderItems OrderItem[]
+}
+
+model OrderItem {
+  id             Int              @id @default(autoincrement())
+  orderId        Int
+  menuItemId     Int
+  quantity       Int
+  price          Int
+  order          Order            @relation(fields: [orderId], references: [id])
+  menuItem       MenuItem         @relation(fields: [menuItemId], references: [id])
+  orderExtraItem OrderExtraItem[]
+}
+
+model OrderExtraItem {
+  id          Int       @id @default(autoincrement())
+  orderItemId Int
+  extraItemId Int
+  quantity    Int
+  price       Int
+  orderItem   OrderItem @relation(fields: [orderItemId], references: [id])
+  extraItem   ExtraItem @relation(fields: [extraItemId], references: [id])
+}
