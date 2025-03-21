@@ -108,12 +108,12 @@ const Food: React.FC<FoodProps> = (props) => {
       },
     },
     btn: {
-      color: isLarge ? colorPalette.__hover : "#000000",
-      bg: isLarge ? colorPalette.primary : "rgba(255, 255, 255, 0.8)",
+      color:   colorPalette.__hover,
+      bg:   colorPalette.primary,
     },
     btnSecondary: {
-      bg: isLarge ? colorPalette.primary : colorPalette.__hover,
-      color: isLarge ? colorPalette.__hover : "#000000",
+      bg:  colorPalette.primary ,
+      color:  colorPalette.__hover ,
     },
     unavailableOverlay: {
       position: "absolute",
@@ -178,7 +178,7 @@ const Food: React.FC<FoodProps> = (props) => {
           flex={1}
           p={4}
           justify="space-between"
-          bg={isLarge ? "white" : colorPalette.fourth}
+          bg={ "white"}
         >
           {/* Title */}
           <Text
